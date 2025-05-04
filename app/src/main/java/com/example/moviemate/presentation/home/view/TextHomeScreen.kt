@@ -33,7 +33,7 @@ fun TextHomeScreen(
             text = "MovieMate",
             fontSize = 50.sp,
             color = colorResource(id = R.color.yellow_main),
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .align(Alignment.CenterHorizontally)
                 .height(50.dp)
@@ -42,14 +42,14 @@ fun TextHomeScreen(
         Image(
             painter = painterResource(id = R.drawable.icon_main),
             contentDescription = null,
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .height(100.dp)
                 .clip(RoundedCornerShape(24.dp)),
         )
         Text(
             text = "\uD83D\uDCF1 MovieMate – Your Personal Movie Assistant",
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(16.dp),
             style = MaterialTheme.typography.headlineMedium,
@@ -57,7 +57,7 @@ fun TextHomeScreen(
         )
         Text(
             text = "MovieMate is a mobile application designed for Android that helps users discover, save, and rate movies with ease. Whether you're a casual viewer or a cinema enthusiast, MovieMate offers a simple and elegant interface to manage your movie experience.",
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(16.dp),
             style = MaterialTheme.typography.bodyMedium,
@@ -65,7 +65,7 @@ fun TextHomeScreen(
         )
         Text(
             text = "\uD83D\uDD11 Key Features:",
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(16.dp),
             style = MaterialTheme.typography.bodyMedium,
@@ -84,9 +84,9 @@ fun TextHomeScreen(
                     "\n" +
                     "\uD83C\uDFAF Target Platform:\n" +
                     "Android (developed with Kotlin and Jetpack Compose)",
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(horizontal = 16.dp,),
+                .padding(horizontal = 16.dp),
             style = MaterialTheme.typography.bodyMedium,
             color = colorResource(id = R.color.yellow_main),
         )
