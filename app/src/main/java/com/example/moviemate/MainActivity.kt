@@ -6,7 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.moviemate.presentation.navigation.MovieMateBottomBarScreen
+import androidx.navigation.compose.rememberNavController
+import com.example.moviemate.presentation.home.view.HomeScreenRoute
+import com.example.moviemate.presentation.navigation.MovieMateRootNavigation
 import com.example.moviemate.ui.theme.MovieMateTheme
 
 class MainActivity : ComponentActivity() {
@@ -15,7 +17,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MovieMateTheme {
-                MovieMateBottomBarScreen()
+                MovieMateRootNavigation()
             }
         }
     }
@@ -25,6 +27,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun HomeScreenPreview() {
     MovieMateTheme {
-        MovieMateBottomBarScreen()
+        HomeScreenRoute(
+            selectedTabIndex = 0,
+            onTabSelected = {},
+            navController = rememberNavController()
+        )
     }
 }

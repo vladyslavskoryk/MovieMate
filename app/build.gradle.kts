@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-kapt")
+    id ("org.jetbrains.kotlin.plugin.serialization")
+    id ("com.google.dagger.hilt.android")
 }
 
 android {
@@ -60,6 +63,16 @@ dependencies {
     implementation (libs.androidx.navigation.compose)
     implementation (libs.androidx.activity.compose)
     implementation (libs.androidx.material.icons.extended)
+    implementation (libs.androidx.navigation.compose.v275)
 
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.android.v2561)
+    kapt(libs.hilt.android.compiler.v2561)
+
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
+    implementation(libs.logging.interceptor)
 
 }
