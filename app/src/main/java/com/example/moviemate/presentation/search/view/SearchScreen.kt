@@ -3,15 +3,16 @@ package com.example.moviemate.presentation.search.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,25 +23,38 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.moviemate.R
+import com.example.moviemate.data.remote.Movie
+import com.example.moviemate.presentation.search.viewmodel.SearchViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.collectAsState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+
 
 @Composable
 fun SearchScreenRoute(
     navController: NavHostController,
     modifier: Modifier = Modifier,
+    viewModel: SearchViewModel = viewModel(),
 ) {
-    Column(
-        modifier = modifier
-    ) {
-        TextSearchScreen(modifier)
-    }
+
+    val searchResults by viewModel.searchResults.collectAsState()
+
+    TextSearchScreen(
+        modifier = modifier,
+        onSearch = { query -> viewModel.searchMovie(query) },
+        searchResults = searchResults
+    )
 }
+
 
 @Composable
 fun TextSearchScreen(
     modifier: Modifier = Modifier,
+    onSearch: (String) -> Unit,
+    searchResults: List<Movie>,
     textFieldState: TextFieldState = remember { TextFieldState() },
 ) {
-    var searchText by rememberSaveable { mutableStateOf("") }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -48,24 +62,32 @@ fun TextSearchScreen(
     ) {
         Text(
             text = "Search",
-            fontSize = 50.sp,
+            fontSize = 40.sp,
             color = colorResource(id = R.color.yellow_main),
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp, vertical = 8.dp)
                 .align(Alignment.CenterHorizontally)
-                .height(50.dp)
         )
+
         SearchBar(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .height(50.dp)
-                .padding(horizontal = 16.dp),
             textFieldState = textFieldState,
-            onSearch = { searchText = it },
-            searchResults = listOf("Movie", "TV Show", "Person"),
+            onSearch = onSearch,
+            searchResults = searchResults,
+            modifier = Modifier.padding(horizontal = 16.dp)
         )
+
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 8.dp)
+        ) {
+            items(searchResults) { movie ->
+                MovieItem(movie = movie)
+            }
+        }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

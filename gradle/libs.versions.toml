@@ -1,5 +1,7 @@
 [versions]
 agp = "8.8.2"
+coilCompose = "2.2.2"
+converterGson = "2.9.0"
 foundation = "1.8.0"
 hiltAndroidCompilerVersion = "2.56.1"
 hiltAndroidVersion = "2.56.1"
@@ -28,6 +30,8 @@ androidx-material-icons-extended = { module = "androidx.compose.material:materia
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 #noinspection SimilarGradleDependency
 androidx-navigation-compose-v275 = { module = "androidx.navigation:navigation-compose", version.ref = "navigationComposeVersion" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 hilt-android-compiler-v2561 = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompilerVersion" }
 hilt-android-v2561 = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
