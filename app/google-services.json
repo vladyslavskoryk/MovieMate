@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1031075327968",
+    "project_id": "moviemate-9bdd2",
+    "storage_bucket": "moviemate-9bdd2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1031075327968:android:b2405038d95f17cdd7c585",
+        "android_client_info": {
+          "package_name": "com.vlad_skoryk.moviemate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1031075327968-9f2agt1idn7sa4olit2m1orsu7i6si25.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vlad_skoryk.moviemate",
+            "certificate_hash": "ba9edd5bd61a6d711a9668dcc6005e91c487d958"
+          }
+        },
+        {
+          "client_id": "1031075327968-ecsn15l0m6o4csp3l2tqms7pdtgg9jpm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAoOTpmKx4cXBvjjXaTeWNYmsw0noG8_k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1031075327968-ecsn15l0m6o4csp3l2tqms7pdtgg9jpm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

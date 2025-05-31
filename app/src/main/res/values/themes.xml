@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
     <style name="Theme.MovieMate" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.MovieMate.Splash" parent="Theme.SplashScreen">
+        <!-- Set the splash screen background color -->
+        <item name="windowSplashScreenBackground">@color/dark_blue</item>
+
+        <!-- Set the splash screen icon -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/icon_main</item>
+
+        <!-- Optional: Set icon animation duration (default is 1000ms) -->
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+
+        <!-- Optional: Set brand image (appears at bottom) -->
+        <!-- <item name="windowSplashScreenBrandingImage">@drawable/brand_logo</item> -->
+
+        <!-- Post-splash theme (your main theme) -->
+        <item name="postSplashScreenTheme">@style/Theme.MovieMate</item>
+    </style>
 </resources>
+

@@ -2,18 +2,20 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("kotlin-kapt")
-    id ("org.jetbrains.kotlin.plugin.serialization")
-    id ("com.google.dagger.hilt.android")
+    id("kotlin-parcelize")
+    id("org.jetbrains.kotlin.plugin.serialization")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.gms.google.services)
 }
 
 android {
-    namespace = "com.example.moviemate"
+    namespace = "com.vlad_skoryk.moviemate"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.moviemate"
-        minSdk = 35
+        applicationId = "com.vlad_skoryk.moviemate"
+        minSdk = 30
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -59,16 +61,10 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.androidx.foundation)
     implementation (libs.androidx.navigation.compose)
     implementation (libs.androidx.activity.compose)
     implementation (libs.androidx.material.icons.extended)
-    implementation (libs.androidx.navigation.compose.v275)
-
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-    implementation(libs.hilt.android.v2561)
-    kapt(libs.hilt.android.compiler.v2561)
+    implementation (libs.androidx.navigation.compose)
 
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit)
@@ -76,4 +72,27 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.converter.gson)
     implementation(libs.coil.compose)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.messaging.ktx)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.firebase.analytics.ktx)
+    implementation(libs.firebase.functions.ktx)
+
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.compiler)
+
+    implementation (libs.androidx.room.runtime)
+    ksp (libs.androidx.room.compiler.v261)
+    implementation(libs.androidx.core.splashscreen)
+
+    implementation(libs.androidx.activity.compose)
+
+    implementation(libs.play.services.auth.v2100)
+    implementation(libs.accompanist.navigation.animation)
 }

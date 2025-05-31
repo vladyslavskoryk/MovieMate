@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.vlad_skoryk.moviemate" />
+                  <option name="mobileSdkAppId" value="1:1031075327968:android:b2405038d95f17cdd7c585" />
+                  <option name="projectId" value="moviemate-9bdd2" />
+                  <option name="projectNumber" value="1031075327968" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

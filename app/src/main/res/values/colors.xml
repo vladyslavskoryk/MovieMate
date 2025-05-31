@@ -10,4 +10,5 @@
     <color name="yellow_main">#FFD547</color>
     <color name="dark_blue">#152238</color>
     <color name="gray_blue">#23395D</color>
+    <color name="splash_background">#FFFFFF</color>
 </resources>
