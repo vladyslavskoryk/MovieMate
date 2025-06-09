@@ -2,11 +2,13 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("kotlin-parcelize")
-    id("org.jetbrains.kotlin.plugin.serialization")
+    alias(libs.plugins.secrets)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    id("kotlin-parcelize")
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.gms.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -21,6 +23,17 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "TMDB_API_KEY",
+            "\"${project.properties["TMDB_API_KEY"]}\""
+        )
+    }
+
+    buildFeatures {
+        compose = true
+        buildConfig = true
     }
 
     buildTypes {
@@ -46,6 +59,7 @@ android {
 
 dependencies {
 
+    // Core Android dependencies
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -54,45 +68,115 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.window)
+    implementation(libs.androidx.material3.window.size.class1)
+    implementation (libs.accompanist.flowlayout)
+
+    // Coroutines
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.play.services)
+
+    // Serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    // Maps
+    implementation(libs.maps.compose)
+    implementation(libs.maps.compose.utils)
+    implementation(libs.maps.compose.widgets)
+    implementation(libs.maps.utils.ktx)
+
+    // Dependency Injection
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.work)
+    ksp(libs.hilt.compiler)
+
+    // Permissions
+    implementation(libs.accompanist.permissions)
+
+    // Location Services
+    implementation(libs.play.services.location)
+
+    // Database
+    implementation(libs.androidx.room.common)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+
+    // Image Loading
+    implementation(libs.coil.compose)
+
+    // Fonts
+    implementation(libs.androidx.ui.text.google.fonts)
+
+    // Networking
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+
+    // Security
+    implementation(libs.androidx.security.state)
+    implementation(libs.androidx.security.crypto)
+
+    // Work Manager
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.lifecycle.service)
+
+    // Data Storage
+    implementation(libs.androidx.datastore.preferences)
+
+    // Logging
+    implementation(libs.timber)
+
+    // Firebase - Use BOM for version management
+    implementation(platform(libs.firebase.bom))
+
+    // Firebase Authentication
+    implementation(libs.firebase.auth)
+    implementation(libs.play.services.auth)
+
+    // Firestore
+    implementation(libs.firebase.firestore)
+
+    // Firebase Storage
+    implementation(libs.firebase.storage.ktx)
+
+    // Firebase Analytics
+    implementation(libs.firebase.analytics.ktx)
+
+    // Firebase Cloud Messaging
+    implementation(libs.firebase.messaging.ktx)
+
+    // Firebase Crashlytics
+    implementation(libs.firebase.crashlytics.ktx)
+
+    // Firebase Cloud Functions (if needed)
+    implementation(libs.firebase.functions.ktx)
+
+    // Firebase Realtime Database (if needed for real-time features)
+    implementation(libs.firebase.database)
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    // Debug tools
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation (libs.androidx.navigation.compose)
-    implementation (libs.androidx.activity.compose)
-    implementation (libs.androidx.material.icons.extended)
-    implementation (libs.androidx.navigation.compose)
 
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit2.kotlinx.serialization.converter)
-    implementation(libs.logging.interceptor)
-    implementation(libs.converter.gson)
-    implementation(libs.coil.compose)
+    // Lottie
+    implementation (libs.lottie.compose)
 
-    // Firebase
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.database)
-    implementation(libs.firebase.messaging.ktx)
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.firestore)
-    implementation(libs.firebase.storage.ktx)
-    implementation(libs.firebase.analytics.ktx)
-    implementation(libs.firebase.functions.ktx)
+    // YouTube Player
+    implementation (libs.core)
 
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
-    ksp(libs.hilt.compiler)
-
-    implementation (libs.androidx.room.runtime)
-    ksp (libs.androidx.room.compiler.v261)
-    implementation(libs.androidx.core.splashscreen)
-
-    implementation(libs.androidx.activity.compose)
-
-    implementation(libs.play.services.auth.v2100)
-    implementation(libs.accompanist.navigation.animation)
 }

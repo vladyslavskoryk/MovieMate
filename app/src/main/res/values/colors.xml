@@ -10,5 +10,8 @@
     <color name="yellow_main">#FFD547</color>
     <color name="dark_blue">#152238</color>
     <color name="gray_blue">#23395D</color>
-    <color name="splash_background">#FFFFFF</color>
+    <color name="light_blue">#EAEEFF</color>
+    <color name="aquamarine">#122931</color>
+    <color name="lighter_aquamarine">#1f3a3f</color>
+    <color name="darker_aquamarine">#0c171f</color>
 </resources>

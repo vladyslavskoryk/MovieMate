@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vlad_skoryk.moviemate.data.remote.Movie
 import com.vlad_skoryk.moviemate.data.remote.MovieRepository
+import com.vlad_skoryk.moviemate.data.remote.RatingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,38 +16,30 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(
     private val repository: MovieRepository,
+    private val ratingRepository: RatingRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     var movie by mutableStateOf<Movie?>(null)
         private set
 
-    var isInWishlist by mutableStateOf(false)
+    var userRating by mutableStateOf<Float?>(null)
         private set
-
-    init {
-        val movieId: Int? = savedStateHandle["movieId"]
-        movieId?.let { loadMovie(it) }
-    }
 
     fun loadMovie(movieId: Int) {
         viewModelScope.launch {
-            val loadedMovie = repository.getMovieDetails(movieId)
-            movie = loadedMovie
-            isInWishlist = repository.isInWishlist(movieId)
+            movie = repository.getMovieDetails(movieId)
+            userRating = ratingRepository.getUserRating(movieId)
         }
     }
 
-    fun toggleWishlistStatus() {
-        val currentMovie = movie ?: return
+    var youtubeTrailerKey by mutableStateOf<String?>(null)
+        private set
+
+    fun loadTrailer(movieId: Int) {
         viewModelScope.launch {
-            if (isInWishlist) {
-                repository.removeFromWishlist(currentMovie.id)
-                isInWishlist = false
-            } else {
-                repository.addToWishlist(currentMovie)
-                isInWishlist = true
-            }
+            youtubeTrailerKey = repository.getYoutubeTrailerKey(movieId)
         }
     }
+
 }

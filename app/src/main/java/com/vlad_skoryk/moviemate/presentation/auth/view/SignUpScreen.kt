@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -132,7 +133,7 @@ fun SignUpForm(
         unfocusedBorderColor = placeholderColor,
         focusedLabelColor = placeholderColor,
         unfocusedLabelColor = placeholderColor,
-        cursorColor = textColor,
+        cursorColor = textColor
     )
 
     Column(
@@ -147,7 +148,8 @@ fun SignUpForm(
             label = { Text("Full Name") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
-            colors = textFieldColors
+            colors = textFieldColors,
+            textStyle = TextStyle(color = textColor)
         )
 
         // Email field
@@ -158,7 +160,8 @@ fun SignUpForm(
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             singleLine = true,
-            colors = textFieldColors
+            colors = textFieldColors,
+            textStyle = TextStyle(color = textColor)
         )
 
         // Password field
@@ -178,7 +181,8 @@ fun SignUpForm(
                 }
             },
             singleLine = true,
-            colors = textFieldColors
+            colors = textFieldColors,
+            textStyle = TextStyle(color = textColor)
         )
 
         // Sign Up Button

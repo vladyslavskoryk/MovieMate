@@ -1,12 +1,13 @@
 package com.vlad_skoryk.moviemate.domain
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
-@Entity(tableName = "wishlist_movies")
+@Entity(tableName = "wishlist_movies", primaryKeys = ["id"])
 data class WishlistMovie(
-    @PrimaryKey val id: Int,
-    val title: String,
-    val posterUrl: String,
-    val overview: String
+    val id: Int = 0,
+    val title: String = "",
+    val posterUrl: String = "",
+    val overview: String = "",
+    val releaseDate: String = "",
+    val voteAverage: Float = 0.0f
 )

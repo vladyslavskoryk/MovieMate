@@ -4,16 +4,16 @@ import androidx.annotation.ColorRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.List
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.StarRate
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
@@ -59,8 +59,8 @@ fun MovieMateBottomBarScreen(
         ),
         BottomNavigationBarItem(
             title = "Wishlist",
-            selectedIcon = Icons.Filled.List,
-            unselectedIcon = Icons.Outlined.List,
+            selectedIcon = Icons.Filled.Bookmark,
+            unselectedIcon = Icons.Filled.BookmarkBorder,
             color = colorResource(id = color),
             hasNews = false,
         ),
@@ -73,9 +73,9 @@ fun MovieMateBottomBarScreen(
             badgeCount = 25
         ),
         BottomNavigationBarItem(
-            title = "Favorites",
-            selectedIcon = Icons.Filled.Favorite,
-            unselectedIcon = Icons.Outlined.Favorite,
+            title = "Rated",
+            selectedIcon = Icons.Filled.StarRate,
+            unselectedIcon = Icons.Outlined.StarRate,
             color = colorResource(id = color),
             hasNews = false,
         ),

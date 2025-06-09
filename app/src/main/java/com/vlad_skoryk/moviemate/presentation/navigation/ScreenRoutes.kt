@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class ScreenRoutes(val route: String) {
-    @Serializable data object SplashScreenRoute : ScreenRoutes("splash")
     @Serializable data object HomeScreenRoute : ScreenRoutes("home")
     @Serializable data object WishlistScreenRoute : ScreenRoutes("wishlist")
     @Serializable data object SearchScreenRoute : ScreenRoutes("search")
@@ -15,4 +14,5 @@ sealed class ScreenRoutes(val route: String) {
     }
     @Serializable data object SignInScreenRoute : ScreenRoutes("sign_in")
     @Serializable data object SignUpScreenRoute : ScreenRoutes("sign_up")
+    @Serializable data object YoutubePlayerScreen : ScreenRoutes("youtube/{youtubeCode}")
 }

@@ -1,8 +1,8 @@
 package com.vlad_skoryk.moviemate.di
 
 import com.vlad_skoryk.moviemate.data.remote.ApiService
-import com.vlad_skoryk.moviemate.data.remote.FakeMovieRepository
 import com.vlad_skoryk.moviemate.data.remote.MovieRepository
+import com.vlad_skoryk.moviemate.data.remote.MovieRepositoryImpl
 import com.vlad_skoryk.moviemate.data.remote.RetrofitClient
 import dagger.Module
 import dagger.Provides
@@ -17,8 +17,9 @@ object RepositoryModule {
     fun provideMovieRepository(
         apiService: ApiService
     ): MovieRepository {
-        return FakeMovieRepository(apiService)
+        return MovieRepositoryImpl(apiService)
     }
+
     @Provides
     fun provideApiService(): ApiService {
         return RetrofitClient.apiService

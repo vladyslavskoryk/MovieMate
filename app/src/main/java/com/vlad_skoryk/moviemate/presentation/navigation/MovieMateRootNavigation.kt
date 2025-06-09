@@ -1,13 +1,10 @@
 package com.vlad_skoryk.moviemate.presentation.navigation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -20,9 +17,10 @@ import com.vlad_skoryk.moviemate.presentation.auth.view.SignInScreenRoute
 import com.vlad_skoryk.moviemate.presentation.auth.view.SignUpScreenRoute
 import com.vlad_skoryk.moviemate.presentation.auth.viewmodel.AuthViewModel
 import com.vlad_skoryk.moviemate.presentation.details.view.MovieDetailScreenRoute
-import com.vlad_skoryk.moviemate.presentation.favourites.view.FavoritesScreenRoute
+import com.vlad_skoryk.moviemate.presentation.details.view.YoutubePlayerScreen
 import com.vlad_skoryk.moviemate.presentation.home.view.HomeScreenRoute
 import com.vlad_skoryk.moviemate.presentation.profile.view.ProfileScreenRoute
+import com.vlad_skoryk.moviemate.presentation.rated.view.RatedScreenRoute
 import com.vlad_skoryk.moviemate.presentation.search.view.SearchScreenRoute
 import com.vlad_skoryk.moviemate.presentation.wishlist.view.WishlistScreenRoute
 
@@ -49,6 +47,8 @@ fun MovieMateRootNavigation(
     val hideBottomBarRoutes = listOf(
         ScreenRoutes.SignInScreenRoute.route,
         ScreenRoutes.SignUpScreenRoute.route,
+        ScreenRoutes.MovieDetailScreenRoute.route,
+        "youtube/{videoId}" // ← Додай це сюди
     )
 
     val isBottomBarVisible = currentRoute !in hideBottomBarRoutes
@@ -114,7 +114,7 @@ fun MovieMateRootNavigation(
                 SearchScreenRoute(navController)
             }
             composable(ScreenRoutes.FavoritesScreenRoute.route) {
-                FavoritesScreenRoute(navController)
+                RatedScreenRoute(navController)
             }
             composable(ScreenRoutes.ProfileScreenRoute.route) {
                 ProfileScreenRoute(
@@ -132,8 +132,15 @@ fun MovieMateRootNavigation(
                 val movieId = backStackEntry.arguments?.getInt("movieId") ?: return@composable
                 MovieDetailScreenRoute(
                     movieId = movieId,
+                    navController = navController, // ✅ Потрібно
                     onBack = { navController.popBackStack() }
                 )
+            }
+            composable("youtube/{videoId}") { backStackEntry ->
+                val videoId = backStackEntry.arguments?.getString("videoId") ?: ""
+                YoutubePlayerScreen(
+                    youtubeCode = videoId,
+                    onBack = { navController.popBackStack() })
             }
         }
     }

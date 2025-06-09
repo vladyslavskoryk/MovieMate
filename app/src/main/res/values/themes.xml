@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
     <style name="Theme.MovieMate" parent="android:Theme.Material.Light.NoActionBar" />
 
     <style name="Theme.MovieMate.Splash" parent="Theme.SplashScreen">
@@ -21,4 +20,3 @@
         <item name="postSplashScreenTheme">@style/Theme.MovieMate</item>
     </style>
 </resources>
-

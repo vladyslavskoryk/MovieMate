@@ -1,8 +1,7 @@
 package com.vlad_skoryk.moviemate.presentation.search.view
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.delete
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
@@ -12,19 +11,15 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.traversalIndex
 import com.vlad_skoryk.moviemate.R
 import com.vlad_skoryk.moviemate.data.remote.Movie
 
@@ -34,82 +29,61 @@ fun SearchBar(
     textFieldState: TextFieldState,
     onSearch: (String) -> Unit,
     searchResults: List<Movie>,
+    onResultClick: (Movie) -> Unit,
     modifier: Modifier = Modifier,
-    onResultClick: (Movie) -> Unit
 ) {
     val backgroundColor = colorResource(id = R.color.dark_blue)
-    val containerColor = colorResource(id = R.color.gray_blue)
     val placeholderColor = colorResource(id = R.color.yellow_main)
     val textColor = colorResource(id = R.color.yellow_main)
 
-    var expanded by rememberSaveable { mutableStateOf(false) }
+    var query by rememberSaveable { mutableStateOf(textFieldState.text.toString()) }
+    var active by rememberSaveable { mutableStateOf(false) }
 
-    Box(
+    SearchBar(
+        query = query,
+        onQueryChange = {
+            query = it
+            textFieldState.edit { replace(0, length, it) }
+            onSearch(it)
+        },
+        onSearch = {
+            onSearch(query)
+            active = false
+        },
+        active = active,
+        onActiveChange = { active = it },
+        placeholder = {
+            Text("Search", color = placeholderColor)
+        },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = "Search Icon",
+                tint = placeholderColor
+            )
+        },
+        trailingIcon = {
+            if (query.isNotEmpty()) {
+                IconButton(onClick = {
+                    query = ""
+                    textFieldState.edit { delete(0, length) }
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Clear Search",
+                        tint = placeholderColor
+                    )
+                }
+            }
+        },
+        colors = SearchBarDefaults.colors(
+            containerColor = backgroundColor,
+            dividerColor = placeholderColor
+        ),
         modifier = modifier
-            .fillMaxSize()
             .semantics { isTraversalGroup = true }
     ) {
-        SearchBar(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .semantics { traversalIndex = 0f },
-            inputField = {
-                SearchBarDefaults.InputField(
-                    query = textFieldState.text.toString(),
-                    onQueryChange = { textFieldState.edit { replace(0, length, it) } },
-                    onSearch = {
-                        onSearch(textFieldState.text.toString())
-                        expanded = false
-                    },
-                    expanded = expanded,
-                    onExpandedChange = { expanded = it },
-                    placeholder = {
-                        Text(
-                            "Search",
-                            color = textColor,
-                        )
-                    },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "Search",
-                            tint = placeholderColor
-                        )
-                    },
-                    trailingIcon = {
-                        if (textFieldState.text.isNotEmpty()) {
-                            IconButton(onClick = {
-                                textFieldState.edit { replace(0, length, "") }
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Default.Close,
-                                    contentDescription = "Close",
-                                    tint = placeholderColor
-                                )
-                            }
-                        }
-                    },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = backgroundColor,
-                        unfocusedContainerColor = backgroundColor,
-                        focusedTextColor = textColor,
-                        unfocusedTextColor = textColor,
-                        cursorColor = placeholderColor,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                    )
-
-                )
-            },
-            expanded = expanded,
-            onExpandedChange = { expanded = it },
-            colors = SearchBarDefaults.colors(
-                containerColor = backgroundColor, // фон всієї пошукової панелі
-                dividerColor = placeholderColor
-            )
-        ) {
-            MovieList(searchResults, onResultClick)
-        }
+        // Випадаючий список результатів пошуку
+        MovieList(movies = searchResults, onResultClick = onResultClick)
     }
 }
-
