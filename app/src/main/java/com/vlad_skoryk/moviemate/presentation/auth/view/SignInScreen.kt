@@ -1,5 +1,6 @@
 package com.vlad_skoryk.moviemate.presentation.auth.view
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -237,6 +239,7 @@ fun SignInForm(
 
         Button(
             onClick = { onSignIn(email, password) },
+            colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.gray_blue)),
             modifier = Modifier.fillMaxWidth(),
             enabled = email.isNotBlank() && password.isNotBlank()
         ) {
@@ -245,10 +248,12 @@ fun SignInForm(
 
         OutlinedButton(
             onClick = onGoogleSignIn,
+            colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.gray_blue)),
+            border = BorderStroke(1.dp, colorResource(id = R.color.dark_blue)),
             modifier = Modifier.fillMaxWidth()
         ) {
             Icon(
-                painter = painterResource(R.drawable.ic_launcher_foreground), // Заміни на Google іконку
+                painter = painterResource(R.drawable.icons8_google), // Заміни на Google іконку
                 contentDescription = null,
                 tint = textColor,
                 modifier = Modifier.size(20.dp)

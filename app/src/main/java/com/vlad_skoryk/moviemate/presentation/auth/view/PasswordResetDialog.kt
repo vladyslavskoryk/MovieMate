@@ -16,8 +16,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.vlad_skoryk.moviemate.R
 
 @Composable
 fun PasswordResetDialog(
@@ -28,7 +30,7 @@ fun PasswordResetDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Reset Password") },
+        title = { Text("Reset Password", color = colorResource(id = R.color.yellow_main)) },
         text = {
             Column {
                 Text("Enter your email address and we'll send you a link to reset your password.")

@@ -1,5 +1,6 @@
 package com.vlad_skoryk.moviemate.presentation.auth.view
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -96,7 +97,7 @@ fun SignUpScreen(
             fontSize = 24.sp,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(bottom = 8.dp)
         )
         HorizontalDivider(color = colorResource(id = R.color.yellow_main), thickness = 1.dp)
         Spacer(modifier = Modifier.height(24.dp))
@@ -188,7 +189,7 @@ fun SignUpForm(
         // Sign Up Button
         Button(
             onClick = { onSignUp(email, password, name) },
-            colors = ButtonDefaults.buttonColors(containerColor = containerColor),
+            colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.gray_blue)),
             modifier = Modifier.fillMaxWidth(),
             enabled = email.isNotBlank() && password.isNotBlank() && name.isNotBlank(),
         ) {
@@ -199,10 +200,11 @@ fun SignUpForm(
         OutlinedButton(
             onClick = onGoogleSignIn,
             colors = ButtonDefaults.buttonColors(containerColor = containerColor),
+            border = BorderStroke(1.dp, colorResource(id = R.color.dark_blue)),
             modifier = Modifier.fillMaxWidth()
         ) {
             Icon(
-                painter = painterResource(R.drawable.ic_launcher_foreground), // TODO: Replace with Google icon
+                painter = painterResource(R.drawable.icons8_google), // TODO: Replace with Google icon
                 contentDescription = null,
                 tint = textColor,
                 modifier = Modifier.size(20.dp)
