@@ -16,7 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
@@ -35,16 +35,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.vlad_skoryk.moviemate.R
 import com.vlad_skoryk.moviemate.data.remote.Movie
+import com.vlad_skoryk.moviemate.domain.CastMember
 import com.vlad_skoryk.moviemate.mapper.toWishlistMovie
+import com.vlad_skoryk.moviemate.presentation.details.components.CastSection
+import com.vlad_skoryk.moviemate.presentation.details.components.ItemOverview
 import com.vlad_skoryk.moviemate.presentation.details.viewmodel.MovieDetailViewModel
 import com.vlad_skoryk.moviemate.presentation.rated.view.RatingBar
 import com.vlad_skoryk.moviemate.presentation.rated.viewmodel.RatedViewModel
@@ -63,9 +66,11 @@ fun MovieDetailScreenRoute(
     LaunchedEffect(movieId) {
         detailViewModel.loadMovie(movieId)
         ratedViewModel.loadUserRating(movieId)
+        detailViewModel.loadMovieCast(movieId)
     }
 
     val movie = detailViewModel.movie
+    val cast = detailViewModel.cast // Add this line to get cast data
     val userRating = ratedViewModel.userRating
     val isInWishlistState = movie?.id?.let {
         wishlistViewModel.isInWishlistFlow(it).collectAsState(initial = false)
@@ -74,12 +79,13 @@ fun MovieDetailScreenRoute(
     if (movie != null && isInWishlistState != null) {
         MovieDetailScreen(
             movie = movie,
+            cast = cast ?: emptyList(), // Pass cast data
             isInWishlist = isInWishlistState.value,
             userRating = userRating,
             onToggleWishlist = { wishlistViewModel.toggleWishlist(movie.toWishlistMovie()) },
             onRateMovie = { rating -> ratedViewModel.rateMovie(movie, rating) },
             onBack = onBack,
-            navController = navController
+            navController = navController,
         )
     } else {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -88,11 +94,10 @@ fun MovieDetailScreenRoute(
     }
 }
 
-
-
 @Composable
 fun MovieDetailScreen(
     movie: Movie,
+    cast: List<CastMember>, // Add cast parameter
     isInWishlist: Boolean,
     userRating: Float?,
     onToggleWishlist: () -> Unit,
@@ -104,7 +109,7 @@ fun MovieDetailScreen(
     var showRatingBar by rememberSaveable { mutableStateOf(false) }
 
     val posterUrl = "https://image.tmdb.org/t/p/w500${movie.posterPath}"
-    val youtubeId = movie.youtubeTrailerId // ← Додай поле у модель
+    val youtubeId = movie.youtubeTrailerId
 
     LaunchedEffect(isInWishlist) {
         wishlistState = isInWishlist
@@ -134,15 +139,21 @@ fun MovieDetailScreen(
             )
 
             Row(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = movie.title,
                     style = MaterialTheme.typography.headlineSmall,
-                    color = colorResource(id = R.color.light_blue)
+                    color = colorResource(id = R.color.light_blue),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
                 )
-                Spacer(modifier = Modifier.weight(1f))
+
+                Spacer(modifier = Modifier.width(8.dp))
 
                 WishlistButton(
                     isInWishlist = wishlistState,
@@ -154,60 +165,45 @@ fun MovieDetailScreen(
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("⭐ ${movie.voteAverage}", color = colorResource(id = R.color.yellow_main))
+                Text("⭐ ${movie.voteAverage}", color = colorResource(id = R.color.light_blue))
+                Spacer(Modifier.width(4.dp))
+                Icon(
+                    Icons.Default.ChevronRight,
+                    contentDescription = "Star",
+                    tint = colorResource(id = R.color.yellow_main)
+                )
+                Spacer(Modifier.width(4.dp))
+                Text(
+                    movie.releaseDate.orEmpty().take(4),
+                    color = colorResource(id = R.color.light_blue)
+                )
                 Spacer(Modifier.width(8.dp))
-                Text(movie.releaseDate.orEmpty().take(4), color = colorResource(id = R.color.light_blue))
-                Spacer(Modifier.width(8.dp))
-                Text("13+", color = colorResource(id = R.color.light_blue))
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Row {
-                Row(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(MaterialTheme.shapes.small)
-                        .background(colorResource(id = R.color.yellow_main))
-                        .clickable {
-                            youtubeId?.let {
-                                navController.navigate("youtube/$it")
-                            }
-                        }
-                        .padding(12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Icon(Icons.Default.PlayArrow, contentDescription = "Play", tint = Color.Black)
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("Play", color = Color.Black)
-                }
-
-                Spacer(modifier = Modifier.width(12.dp))
-
-                Row(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(MaterialTheme.shapes.small)
-                        .background(colorResource(id = R.color.light_blue))
-                        .clickable { /* TODO: Download */ }
-                        .padding(12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Icon(Icons.Default.Download, contentDescription = "Download", tint = Color.Black)
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("Download", color = Color.Black)
+                Row {
+                    Row(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(MaterialTheme.shapes.small)
+                            .background(colorResource(id = R.color.dark_blue))
+                            .clickable {
+                                youtubeId?.let {
+                                    navController.navigate("youtube/$it")
+                                }
+                            },
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        Icon(
+                            Icons.Default.PlayArrow,
+                            contentDescription = "Play Trailer",
+                            tint = colorResource(id = R.color.light_blue)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text("Play Trailer", color = colorResource(id = R.color.light_blue))
+                    }
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = movie.overview ?: "No description available.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = colorResource(id = R.color.light_blue)
-            )
+            ItemOverview(movie)
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -223,13 +219,13 @@ fun MovieDetailScreen(
             if (userRating != null && !showRatingBar) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "Ваша оцінка: ⭐ $userRating",
+                        text = "Your rating: ⭐ $userRating",
                         color = colorResource(id = R.color.yellow_main),
                         style = MaterialTheme.typography.bodyLarge
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Змінити",
+                        text = "Change",
                         color = colorResource(id = R.color.light_blue),
                         modifier = Modifier.clickable { showRatingBar = true },
                         style = MaterialTheme.typography.bodyMedium
@@ -240,7 +236,7 @@ fun MovieDetailScreen(
             if (showRatingBar || userRating == null) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = if (userRating != null) "Змініть оцінку:" else "Оцініть фільм:",
+                    text = if (userRating != null) "Change rating:" else "Rate movie:",
                     color = colorResource(id = R.color.yellow_main),
                     style = MaterialTheme.typography.bodyLarge
                 )
@@ -264,6 +260,9 @@ fun MovieDetailScreen(
                 )
             }
 
+            // Fixed CastSection call
+            CastSection(cast = cast)
+
             Spacer(modifier = Modifier.height(24.dp))
             HorizontalDivider(color = colorResource(id = R.color.yellow_main), thickness = 1.dp)
         }
@@ -273,7 +272,7 @@ fun MovieDetailScreen(
                 .fillMaxWidth()
                 .height(64.dp)
                 .background(colorResource(id = R.color.dark_blue))
-                .padding(start = 8.dp),
+                .padding(horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) {
@@ -290,7 +289,9 @@ fun MovieDetailScreen(
                 text = movie.title,
                 style = MaterialTheme.typography.headlineSmall,
                 color = colorResource(id = R.color.light_blue),
-                maxLines = 1
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f)
             )
         }
     }

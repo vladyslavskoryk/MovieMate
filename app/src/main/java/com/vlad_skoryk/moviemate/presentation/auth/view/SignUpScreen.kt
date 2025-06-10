@@ -217,15 +217,3 @@ fun SignUpForm(
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun RegisterScreenPreview() {
-    SignUpScreen(
-        onSignUp = { _, _, _ -> },
-        onGoogleSignIn = {},
-        onSwitchToSignIn = {},
-        error = null,
-        onDismissError = {}
-    )
-}

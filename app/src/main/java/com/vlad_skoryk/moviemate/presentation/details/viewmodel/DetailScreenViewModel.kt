@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.vlad_skoryk.moviemate.data.remote.Movie
 import com.vlad_skoryk.moviemate.data.remote.MovieRepository
 import com.vlad_skoryk.moviemate.data.remote.RatingRepository
+import com.vlad_skoryk.moviemate.domain.CastMember
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,6 +24,9 @@ class MovieDetailViewModel @Inject constructor(
     var movie by mutableStateOf<Movie?>(null)
         private set
 
+    var tvShow by mutableStateOf<Movie?>(null)
+        private set
+
     var userRating by mutableStateOf<Float?>(null)
         private set
 
@@ -32,6 +36,22 @@ class MovieDetailViewModel @Inject constructor(
             userRating = ratingRepository.getUserRating(movieId)
         }
     }
+
+    var cast by mutableStateOf<List<CastMember>>(emptyList())
+        private set
+
+    fun loadMovieCast(movieId: Int) {
+        viewModelScope.launch {
+            cast = repository.getMovieCast(movieId)
+        }
+    }
+
+//    fun loadTVShow(tvId: Int) {
+//        viewModelScope.launch {
+//            tvShow = repository.getTVShowDetails(tvId)
+//            userRating = ratingRepository.getUserRating(tvId)
+//        }
+//    }
 
     var youtubeTrailerKey by mutableStateOf<String?>(null)
         private set

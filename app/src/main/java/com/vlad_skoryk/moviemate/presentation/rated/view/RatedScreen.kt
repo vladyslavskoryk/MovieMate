@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -60,6 +61,11 @@ fun RatedScreen(
             modifier = Modifier.padding(16.dp),
             color = colorResource(id = R.color.yellow_main),
             style = MaterialTheme.typography.headlineSmall
+        )
+        HorizontalDivider(
+            color = colorResource(id = R.color.yellow_main),
+            thickness = 1.dp,
+            modifier = Modifier.padding(horizontal = 16.dp)
         )
 
         LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {

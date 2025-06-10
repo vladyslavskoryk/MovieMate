@@ -16,6 +16,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+enum class RatedSortOption(val label: String) {
+    TITLE("Title"),
+    RATING("Rating"),
+    DATE_ADDED("Date Added")
+}
+
 @HiltViewModel
 class RatedViewModel @Inject constructor(
     private val ratedRepository: RatingRepository,

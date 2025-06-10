@@ -57,14 +57,6 @@ fun TextSearchScreen(
             .fillMaxSize()
             .background(colorResource(id = R.color.dark_blue))
     ) {
-        Text(
-            text = "Search",
-            fontSize = 40.sp,
-            color = colorResource(id = R.color.yellow_main),
-            modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-                .align(Alignment.CenterHorizontally)
-        )
         SearchBar(
             onResultClick = onResultClick,
             textFieldState = textFieldState,

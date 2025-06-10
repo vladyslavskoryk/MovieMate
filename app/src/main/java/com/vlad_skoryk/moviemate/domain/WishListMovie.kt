@@ -9,5 +9,6 @@ data class WishlistMovie(
     val posterUrl: String = "",
     val overview: String = "",
     val releaseDate: String = "",
-    val voteAverage: Float = 0.0f
+    val voteAverage: Float = 0.0f,
+    val cast: String = "",
 )

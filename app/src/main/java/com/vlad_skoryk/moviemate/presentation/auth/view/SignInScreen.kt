@@ -21,6 +21,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -55,9 +58,12 @@ import com.vlad_skoryk.moviemate.presentation.navigation.ScreenRoutes
 fun SignInScreenRoute(
     navController: NavHostController,
     viewModel: AuthViewModel = hiltViewModel(),
+    snackbarHostState: SnackbarHostState = SnackbarHostState(),
     onSuccess: () -> Unit,
 ) {
     var launchGoogleSignIn by remember { mutableStateOf(false) }
+    var showResetDialog by remember { mutableStateOf(false) }
+
 
     val user by viewModel.authState.collectAsState()
     val error by viewModel.error.collectAsState()
@@ -84,13 +90,26 @@ fun SignInScreenRoute(
         onSignIn = { email, password -> viewModel.signIn(email, password) },
         onGoogleSignIn = { launchGoogleSignIn = true },
         onSwitchToSignUp = { navController.navigate(ScreenRoutes.SignUpScreenRoute.route) },
-        onForgotPassword = {  },
+        onForgotPassword = { showResetDialog = true },
         onContinueAsGuest = { /* TODO */ },
         error = error,
-        onDismissError = { viewModel.clearError() }
+        onDismissError = { viewModel.clearError() },
+        snackbarHostState = snackbarHostState
     )
 
+    if (showResetDialog) {
+        PasswordResetDialog(
+            onDismiss = { showResetDialog = false },
+            onSendReset = { email ->
+                viewModel.sendPasswordReset(email) { success ->
+                    showResetDialog = false
+                    // 🔔 Тут можете викликати Snackbar/Toast через інші механізми
+                }
+            }
+        )
+    }
 }
+
 
 @Composable
 fun SignInScreen(
@@ -101,51 +120,57 @@ fun SignInScreen(
     onContinueAsGuest: () -> Unit,
     error: String?,
     onDismissError: () -> Unit,
+    snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(colorResource(id = R.color.dark_blue))
-            .padding(16.dp)
-    ) {
-        Text(
-            text = "Sign In",
-            style = MaterialTheme.typography.headlineSmall,
-            color = colorResource(id = R.color.yellow_main),
-            fontSize = 24.sp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp)
-        )
-
-        HorizontalDivider(
-            color = colorResource(id = R.color.yellow_main),
-            thickness = 1.dp,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-        // Показ повідомлення про помилку
-        if (error != null) {
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        containerColor = colorResource(id = R.color.dark_blue)
+    ) { padding ->
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp)
+        ) {
             Text(
-                text = error,
-                color = Color.Red,
+                text = "Sign In",
+                style = MaterialTheme.typography.headlineSmall,
+                color = colorResource(id = R.color.yellow_main),
+                fontSize = 24.sp,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp)
-                    .clickable { onDismissError() }
+            )
+
+            HorizontalDivider(
+                color = colorResource(id = R.color.yellow_main),
+                thickness = 1.dp,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            if (error != null) {
+                Text(
+                    text = error,
+                    color = Color.Red,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp)
+                        .clickable { onDismissError() }
+                )
+            }
+
+            SignInForm(
+                onSignIn = onSignIn,
+                onGoogleSignIn = onGoogleSignIn,
+                onSwitchToSignUp = onSwitchToSignUp,
+                onForgotPassword = onForgotPassword,
+                onContinueAsGuest = onContinueAsGuest
             )
         }
-
-        SignInForm(
-            onSignIn = onSignIn,
-            onGoogleSignIn = onGoogleSignIn,
-            onSwitchToSignUp = onSwitchToSignUp,
-            onForgotPassword = onForgotPassword,
-            onContinueAsGuest = onContinueAsGuest
-        )
     }
 }
+
 
 @Composable
 fun SignInForm(
@@ -240,18 +265,4 @@ fun SignInForm(
             Text("Continue as Guest", color = textColor)
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SignInScreenPreview() {
-    SignInScreen(
-        onSignIn = { _, _ -> },
-        onGoogleSignIn = {},
-        onSwitchToSignUp = {},
-        onForgotPassword = {},
-        onContinueAsGuest = {},
-        error = null,
-        onDismissError = {}
-    )
 }

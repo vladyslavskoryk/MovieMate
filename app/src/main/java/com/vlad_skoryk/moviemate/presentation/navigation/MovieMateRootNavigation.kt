@@ -105,7 +105,7 @@ fun MovieMateRootNavigation(
                 )
             }
             composable(ScreenRoutes.HomeScreenRoute.route) {
-                HomeScreenRoute(selectedTabIndex, onTabSelected = {}, navController = navController)
+                HomeScreenRoute(navController)
             }
             composable(ScreenRoutes.WishlistScreenRoute.route) {
                 WishlistScreenRoute(navController)
@@ -126,13 +126,13 @@ fun MovieMateRootNavigation(
                 )
             }
             composable(
-                route = ScreenRoutes.MovieDetailScreenRoute.route,
+                route = "movie_detail/{movieId}", // Changed from "movieDetail/{movieId}"
                 arguments = listOf(navArgument("movieId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val movieId = backStackEntry.arguments?.getInt("movieId") ?: return@composable
                 MovieDetailScreenRoute(
                     movieId = movieId,
-                    navController = navController, // ✅ Потрібно
+                    navController = navController,
                     onBack = { navController.popBackStack() }
                 )
             }

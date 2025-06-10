@@ -3,6 +3,7 @@ package com.vlad_skoryk.moviemate.presentation.profile.view
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +14,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -31,6 +39,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.google.firebase.auth.FirebaseUser
@@ -82,7 +91,7 @@ fun ProfileScreen(
     onChangePassword: () -> Unit
 ) {
     val photoUrl = user?.photoUrl
-    val name = user?.displayName ?: user?.email ?: "Guest"
+    val name = user?.displayName ?: user?.email ?: "Гість"
     val email = user?.email ?: ""
     val emailVerified = user?.isEmailVerified ?: false
 
@@ -91,53 +100,139 @@ fun ProfileScreen(
             .fillMaxSize()
             .background(colorResource(id = R.color.dark_blue))
             .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        horizontalAlignment = Alignment.Start,
     ) {
-        if (photoUrl != null) {
-            AsyncImage(
-                model = photoUrl,
-                contentDescription = "Profile photo",
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop
-            )
-        }
-
+        Text(
+            text = "Profile",
+            style = MaterialTheme.typography.headlineSmall,
+            color = colorResource(id = R.color.yellow_main),
+            modifier = Modifier
+        )
         Spacer(modifier = Modifier.height(16.dp))
+        // Profile Card
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.large,
+            colors = CardDefaults.cardColors(
+                containerColor = colorResource(id = R.color.dark_blue)
+            ),
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                if (photoUrl != null) {
+                    AsyncImage(
+                        model = photoUrl,
+                        contentDescription = "Profile photo",
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(CircleShape)
+                            .background(Color.LightGray.copy(alpha = 0.2f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = name.take(1).uppercase(),
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = Color.White
+                        )
+                    }
+                }
 
-        Text(name, style = MaterialTheme.typography.headlineSmall, color = colorResource(id = R.color.yellow_main))
-        Text(email, color = Color.LightGray)
+                Spacer(modifier = Modifier.height(12.dp))
 
-        Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = name,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = colorResource(id = R.color.yellow_main)
+                )
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = if (emailVerified) "Email підтверджено" else "Email не підтверджено",
-                color = if (emailVerified) Color.Green else Color.Red
-            )
-            if (!emailVerified) {
-                Spacer(modifier = Modifier.width(8.dp))
-                OutlinedButton(onClick = onSendEmailVerification) {
-                    Text("Надіслати лист")
+                if (email.isNotEmpty()) {
+                    Text(
+                        text = email,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.LightGray
+                    )
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = onChangePassword, modifier = Modifier.fillMaxWidth()) {
-            Text("Змінити пароль")
+        // Email verification status
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = if (emailVerified) Color(0xFF2E7D32) else Color(0xFFC62828)
+            ),
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = if (emailVerified) "Email підтверджено" else "Email не підтверджено",
+                    color = colorResource(id = R.color.light_blue),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                if (!emailVerified) {
+                    OutlinedButton(
+                        onClick = onSendEmailVerification,
+                        border = ButtonDefaults.outlinedButtonBorder,
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = colorResource(id = R.color.light_blue)
+                        )
+                    ) {
+                        Text("Надіслати", color = colorResource(id = R.color.light_blue))
+                    }
+                }
+            }
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-        Button(onClick = onSignOut, modifier = Modifier.fillMaxWidth()) {
-            Text("Вийти з акаунту")
+        // Action buttons
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(
+                onClick = onChangePassword,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.dark_blue)
+                ),
+            ) {
+                Icon(Icons.Default.Key, contentDescription = "Logout", tint = colorResource(id = R.color.light_blue))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Change password", color = colorResource(id = R.color.light_blue))
+            }
+
+            Button(
+                onClick = onSignOut,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.dark_blue)
+                ),
+            ) {
+                Icon(Icons.Default.Logout, contentDescription = "Logout", tint = colorResource(id = R.color.light_blue))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Logout", color = colorResource(id = R.color.light_blue))
+            }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

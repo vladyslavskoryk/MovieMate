@@ -66,8 +66,4 @@ class WishlistViewModel @Inject constructor(
     fun isInWishlistFlow(movieId: Int): Flow<Boolean> = flow {
         emit(repository.isInWishlist(movieId))
     }
-
-    fun updateSortOption(option: WishlistSortOption) {
-        sortOption.value = option
-    }
 }
