@@ -260,9 +260,5 @@ fun SignInForm(
         TextButton(onClick = onSwitchToSignUp) {
             Text("Don't have an account? Sign Up", color = textColor)
         }
-
-        TextButton(onClick = onContinueAsGuest) {
-            Text("Continue as Guest", color = textColor)
-        }
     }
 }
