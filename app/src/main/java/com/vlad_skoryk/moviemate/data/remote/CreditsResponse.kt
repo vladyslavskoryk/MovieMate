@@ -10,6 +10,7 @@ data class CastDto(
     val id: Int,
     val name: String,
     val character: String,
+    val job: String?,
     @SerializedName("profile_path")
     val profilePath: String?
 )

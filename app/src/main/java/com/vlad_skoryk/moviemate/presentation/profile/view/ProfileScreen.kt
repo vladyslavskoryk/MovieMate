@@ -21,6 +21,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -99,14 +101,19 @@ fun ProfileScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.dark_blue))
-            .padding(16.dp),
+            .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.Start,
     ) {
         Text(
             text = "Profile",
             style = MaterialTheme.typography.headlineSmall,
             color = colorResource(id = R.color.yellow_main),
-            modifier = Modifier
+            modifier = Modifier.padding(vertical = 16.dp)
+        )
+
+        HorizontalDivider(
+            color = colorResource(id = R.color.yellow_main),
+            thickness = 1.dp,
         )
         Spacer(modifier = Modifier.height(16.dp))
         // Profile Card
@@ -114,8 +121,9 @@ fun ProfileScreen(
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.large,
             colors = CardDefaults.cardColors(
-                containerColor = colorResource(id = R.color.dark_blue)
+                containerColor = colorResource(id = R.color.gray_blue)
             ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth()
@@ -173,6 +181,7 @@ fun ProfileScreen(
             colors = CardDefaults.cardColors(
                 containerColor = if (emailVerified) Color(0xFF2E7D32) else Color(0xFFC62828)
             ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {
             Row(
                 modifier = Modifier
@@ -181,7 +190,7 @@ fun ProfileScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = if (emailVerified) "Email підтверджено" else "Email не підтверджено",
+                    text = if (emailVerified) "Email verified" else "Email not verified",
                     color = colorResource(id = R.color.light_blue),
                     style = MaterialTheme.typography.bodyLarge
                 )
@@ -189,12 +198,12 @@ fun ProfileScreen(
                     OutlinedButton(
                         onClick = onSendEmailVerification,
                         border = ButtonDefaults.outlinedButtonBorder,
-                        modifier = Modifier.padding(horizontal = 16.dp),
+                        modifier = Modifier.padding(horizontal = 12.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
                             contentColor = colorResource(id = R.color.light_blue)
                         )
                     ) {
-                        Text("Надіслати", color = colorResource(id = R.color.light_blue))
+                        Text("Send", color = colorResource(id = R.color.light_blue))
                     }
                 }
             }
@@ -211,19 +220,23 @@ fun ProfileScreen(
             Button(
                 onClick = onChangePassword,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.dark_blue)
+                    containerColor = colorResource(id = R.color.gray_blue)
                 ),
+                elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 4.dp),
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(Icons.Default.Key, contentDescription = "Logout", tint = colorResource(id = R.color.light_blue))
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Change password", color = colorResource(id = R.color.light_blue))
             }
 
-            Button(
+            ElevatedButton(
                 onClick = onSignOut,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.dark_blue)
+                    containerColor = colorResource(id = R.color.gray_blue)
                 ),
+                elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 4.dp),
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(Icons.Default.Logout, contentDescription = "Logout", tint = colorResource(id = R.color.light_blue))
                 Spacer(modifier = Modifier.width(8.dp))

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,11 +21,10 @@ import com.vlad_skoryk.moviemate.domain.CastMember
 fun CastSection(cast: List<CastMember>) {
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
         Text(
-            text = "Top Billed Cast",
+            text = "Cast",
             color = colorResource(id = R.color.yellow_main),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding()
         )
         LazyRow(
             contentPadding = PaddingValues(vertical = 8.dp),

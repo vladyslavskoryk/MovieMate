@@ -18,7 +18,7 @@ import javax.inject.Inject
 class MovieDetailViewModel @Inject constructor(
     private val repository: MovieRepository,
     private val ratingRepository: RatingRepository,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     var movie by mutableStateOf<Movie?>(null)
@@ -39,6 +39,7 @@ class MovieDetailViewModel @Inject constructor(
 
     var cast by mutableStateOf<List<CastMember>>(emptyList())
         private set
+
 
     fun loadMovieCast(movieId: Int) {
         viewModelScope.launch {

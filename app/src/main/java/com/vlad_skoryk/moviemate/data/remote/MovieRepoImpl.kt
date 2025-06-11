@@ -43,7 +43,8 @@ class MovieRepositoryImpl @Inject constructor(
                 id = it.id,
                 name = it.name,
                 character = it.character,
-                profilePath = it.profilePath
+                profilePath = it.profilePath,
+                job = it.job
             )
         }
     }

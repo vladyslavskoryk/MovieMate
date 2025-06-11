@@ -2,10 +2,9 @@ package com.vlad_skoryk.moviemate.data.remote
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.vlad_skoryk.moviemate.domain.Genre
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
-
-
 
 data class MovieResponse(
     val results: List<Movie>
@@ -17,8 +16,8 @@ data class Movie(
         val title: String,
         val overview: String?,
 
-        @SerializedName("genre")
-        val genre: List<String>?,
+        @SerializedName("genres")
+        val genres: List<Genre>?,
 
         @SerializedName("release_date")
         val releaseDate: String?,
@@ -35,8 +34,8 @@ data class Movie(
         @SerializedName("metascore")
         val metaScore: String?,
 
-        @SerializedName("director")
-        val director: String?,
+        @SerializedName("directors")
+        val directors: String?,
 
         @SerializedName("belongs_to_collection")
         val belongsToCollection: BelongsToCollection?,

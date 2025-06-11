@@ -1,18 +1,14 @@
-package com.vlad_skoryk.moviemate.presentation.search.view
+package com.vlad_skoryk.moviemate.presentation.wishlist.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -20,42 +16,24 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.vlad_skoryk.moviemate.R
-import com.vlad_skoryk.moviemate.data.remote.Movie
+import com.vlad_skoryk.moviemate.domain.WishlistMovie
 
 @Composable
-fun MovieList(movies: List<Movie>, onResultClick: (Movie) -> Unit = {}) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        items(movies) { movie ->
-            MovieItem(movie = movie, onResultClick = onResultClick)
-        }
-    }
-}
-
-@Composable
-fun MovieItem(
-    movie: Movie,
-    onResultClick: (Movie) -> Unit = {}
+fun WishlistMovieCard(
+    movie: WishlistMovie,
+    onMovieClick: (Int) -> Unit
 ) {
-
-    val posterUrl = "https://image.tmdb.org/t/p/w200${movie.posterPath}"
+    val posterUrl = "https://image.tmdb.org/t/p/w200${movie.posterUrl}"
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onResultClick(movie) }
+            .clickable { onMovieClick(movie.id) }
             .padding(vertical = 12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(

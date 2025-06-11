@@ -13,13 +13,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -70,7 +72,7 @@ fun MovieDetailScreenRoute(
     }
 
     val movie = detailViewModel.movie
-    val cast = detailViewModel.cast // Add this line to get cast data
+    val cast = detailViewModel.cast
     val userRating = ratedViewModel.userRating
     val isInWishlistState = movie?.id?.let {
         wishlistViewModel.isInWishlistFlow(it).collectAsState(initial = false)
@@ -79,7 +81,7 @@ fun MovieDetailScreenRoute(
     if (movie != null && isInWishlistState != null) {
         MovieDetailScreen(
             movie = movie,
-            cast = cast ?: emptyList(), // Pass cast data
+            cast = cast ?: emptyList(),
             isInWishlist = isInWishlistState.value,
             userRating = userRating,
             onToggleWishlist = { wishlistViewModel.toggleWishlist(movie.toWishlistMovie()) },
@@ -97,7 +99,7 @@ fun MovieDetailScreenRoute(
 @Composable
 fun MovieDetailScreen(
     movie: Movie,
-    cast: List<CastMember>, // Add cast parameter
+    cast: List<CastMember>,
     isInWishlist: Boolean,
     userRating: Float?,
     onToggleWishlist: () -> Unit,
@@ -123,21 +125,25 @@ fun MovieDetailScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 64.dp, start = 16.dp, end = 16.dp)
+                .padding(top = 60.dp, start = 16.dp, end = 16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             Spacer(modifier = Modifier.height(16.dp))
 
-            AsyncImage(
-                model = posterUrl,
-                contentDescription = movie.title,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(500.dp)
-                    .clip(MaterialTheme.shapes.medium),
-                contentScale = ContentScale.Crop
-            )
-
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+            ) {
+                AsyncImage(
+                    model = posterUrl,
+                    contentDescription = movie.title,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(500.dp)
+                        .clip(MaterialTheme.shapes.medium),
+                    contentScale = ContentScale.FillBounds
+                )
+            }
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -203,17 +209,32 @@ fun MovieDetailScreen(
                 }
             }
 
+            movie.genres?.takeIf { it.isNotEmpty() }?.let { genres ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    genres.forEach { genre ->
+                        Text(
+                            text = genre.name,
+                            color = colorResource(id = R.color.yellow_main),
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier
+                                .background(
+                                    color = colorResource(id = R.color.light_blue).copy(alpha = 0.2f),
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .padding(horizontal = 8.dp, vertical = 4.dp)
+                        )
+                    }
+                }
+            }
+
             ItemOverview(movie)
 
             Spacer(modifier = Modifier.height(24.dp))
-
-            movie.director?.let {
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = colorResource(id = R.color.yellow_main)
-                )
-            }
 
             // Rating
             if (userRating != null && !showRatingBar) {
@@ -260,11 +281,19 @@ fun MovieDetailScreen(
                 )
             }
 
+            cast.firstOrNull { it.job == "Director" }?.let { director ->
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Director: ${director.name}",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = colorResource(id = R.color.light_blue)
+                )
+            }
+
             // Fixed CastSection call
             CastSection(cast = cast)
 
             Spacer(modifier = Modifier.height(24.dp))
-            HorizontalDivider(color = colorResource(id = R.color.yellow_main), thickness = 1.dp)
         }
 
         Row(
@@ -288,7 +317,7 @@ fun MovieDetailScreen(
             Text(
                 text = movie.title,
                 style = MaterialTheme.typography.headlineSmall,
-                color = colorResource(id = R.color.light_blue),
+                color = colorResource(id = R.color.yellow_main),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f)

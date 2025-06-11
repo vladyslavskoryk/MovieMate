@@ -37,7 +37,7 @@ fun TextHomeScreen(
             painter = painterResource(id = R.drawable.background_img),
             contentDescription = null,
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
         )
         Text(
             text = "Welcome",
@@ -48,14 +48,6 @@ fun TextHomeScreen(
                 .height(50.dp)
                 .align(Alignment.TopStart)
         )
-//        Image(
-//            painter = painterResource(id = R.drawable.icon_main),
-//            contentDescription = null,
-//            modifier = Modifier
-//                .align(Alignment.CenterHorizontally)
-//                .height(100.dp)
-//                .clip(RoundedCornerShape(24.dp)),
-//        )
         Text(
             text = "MovieMate – Your Personal Movie Assistant.\n" +
                     "Milions of movies and people to discover\n"+
