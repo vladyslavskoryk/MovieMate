@@ -1,4 +1,4 @@
-package com.vlad_skoryk.moviemate.presentation.auth.view
+package com.vlad_skoryk.moviemate.presentation.auth.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

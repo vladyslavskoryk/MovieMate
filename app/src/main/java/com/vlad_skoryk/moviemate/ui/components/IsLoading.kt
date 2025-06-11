@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -22,7 +22,7 @@ fun IsLoading(isLoading: Boolean) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.LightGray.copy(alpha = 0.5f))
+                .background(colorResource(id = R.color.dark_blue))
         ) {
 
             LottieAnimation(

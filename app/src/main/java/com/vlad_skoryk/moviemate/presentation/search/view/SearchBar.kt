@@ -25,7 +25,7 @@ import com.vlad_skoryk.moviemate.data.remote.Movie
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar(
+fun CustomSearchBar(
     textFieldState: TextFieldState,
     onSearch: (String) -> Unit,
     searchResults: List<Movie>,
@@ -78,12 +78,11 @@ fun SearchBar(
         },
         colors = SearchBarDefaults.colors(
             containerColor = backgroundColor,
-            dividerColor = placeholderColor
+            dividerColor = placeholderColor,
         ),
         modifier = modifier
             .semantics { isTraversalGroup = true }
     ) {
-        // Випадаючий список результатів пошуку
         MovieList(movies = searchResults, onResultClick = onResultClick)
     }
 }

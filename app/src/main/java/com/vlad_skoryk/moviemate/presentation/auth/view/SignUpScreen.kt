@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.vlad_skoryk.moviemate.R
+import com.vlad_skoryk.moviemate.presentation.auth.components.SignUpForm
 import com.vlad_skoryk.moviemate.presentation.auth.viewmodel.AuthViewModel
 import com.vlad_skoryk.moviemate.presentation.navigation.ScreenRoutes
 
@@ -108,114 +109,5 @@ fun SignUpScreen(
             error = error,
             onDismissError = onDismissError
         )
-    }
-}
-
-@Composable
-fun SignUpForm(
-    onSignUp: (String, String, String) -> Unit,
-    onGoogleSignIn: () -> Unit,
-    onSwitchToSignIn: () -> Unit,
-    error: String?,
-    onDismissError: () -> Unit,
-) {
-    var name by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var showPassword by remember { mutableStateOf(false) }
-
-    val backgroundColor = colorResource(id = R.color.dark_blue)
-    val containerColor = colorResource(id = R.color.gray_blue)
-    val placeholderColor = colorResource(id = R.color.yellow_main)
-    val textColor = colorResource(id = R.color.yellow_main)
-
-    val textFieldColors = OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = placeholderColor,
-        unfocusedBorderColor = placeholderColor,
-        focusedLabelColor = placeholderColor,
-        unfocusedLabelColor = placeholderColor,
-        cursorColor = textColor
-    )
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        // Name field
-        OutlinedTextField(
-            value = name,
-            onValueChange = { name = it },
-            label = { Text("Full Name") },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            colors = textFieldColors,
-            textStyle = TextStyle(color = textColor)
-        )
-
-        // Email field
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            singleLine = true,
-            colors = textFieldColors,
-            textStyle = TextStyle(color = textColor)
-        )
-
-        // Password field
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            trailingIcon = {
-                IconButton(onClick = { showPassword = !showPassword }) {
-                    Icon(
-                        imageVector = if (showPassword) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                        contentDescription = if (showPassword) "Hide password" else "Show password"
-                    )
-                }
-            },
-            singleLine = true,
-            colors = textFieldColors,
-            textStyle = TextStyle(color = textColor)
-        )
-
-        // Sign Up Button
-        Button(
-            onClick = { onSignUp(email, password, name) },
-            colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.gray_blue)),
-            modifier = Modifier.fillMaxWidth(),
-            enabled = email.isNotBlank() && password.isNotBlank() && name.isNotBlank(),
-        ) {
-            Text("Create Account", color = textColor)
-        }
-
-        // Google Sign In
-        OutlinedButton(
-            onClick = onGoogleSignIn,
-            colors = ButtonDefaults.buttonColors(containerColor = containerColor),
-            border = BorderStroke(1.dp, colorResource(id = R.color.dark_blue)),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.icons8_google), // TODO: Replace with Google icon
-                contentDescription = null,
-                tint = textColor,
-                modifier = Modifier.size(20.dp)
-            )
-            Spacer(modifier = Modifier.size(8.dp))
-            Text("Continue with Google", color = textColor)
-        }
-
-        // Switch to Sign In
-        TextButton(onClick = onSwitchToSignIn) {
-            Text("Already have an account? Sign In", color = textColor)
-        }
     }
 }

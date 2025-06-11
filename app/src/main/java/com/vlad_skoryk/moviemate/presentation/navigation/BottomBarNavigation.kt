@@ -70,7 +70,6 @@ fun MovieMateBottomBarScreen(
             unselectedIcon = Icons.Outlined.Search,
             color = colorResource(id = color),
             hasNews = false,
-            badgeCount = 25
         ),
         BottomNavigationBarItem(
             title = "Rated",

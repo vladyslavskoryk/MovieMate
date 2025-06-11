@@ -57,7 +57,7 @@ fun TextSearchScreen(
             .fillMaxSize()
             .background(colorResource(id = R.color.dark_blue))
     ) {
-        SearchBar(
+        CustomSearchBar(
             onResultClick = onResultClick,
             textFieldState = textFieldState,
             onSearch = onSearch,
