@@ -139,7 +139,7 @@ fun SignUpScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "Sign in to continue",
+                    text = "Sign up to continue",
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                     color = colorResource(id = R.color.light_blue)
