@@ -20,11 +20,8 @@ class SearchViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 val response = RetrofitClient.apiService.searchMovies(query = query)
-//                val tvshow_response = RetrofitClient.apiService.searchTVShows(query = query)
                 _searchResults.value = response.results
-//                _searchResults.value = tvshow_response.results
-                _suggestions.value = response.results.take(5) // наприклад, перші 5
-//                _suggestions.value = tvshow_response.results.take(5) // наприклад, перші 5
+                _suggestions.value = response.results.take(5)
             } catch (e: Exception) {
                 _searchResults.value = emptyList()
                 _suggestions.value = emptyList()

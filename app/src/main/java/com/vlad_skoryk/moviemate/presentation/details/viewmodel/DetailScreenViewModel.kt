@@ -18,16 +18,15 @@ import javax.inject.Inject
 class MovieDetailViewModel @Inject constructor(
     private val repository: MovieRepository,
     private val ratingRepository: RatingRepository,
-    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     var movie by mutableStateOf<Movie?>(null)
         private set
 
-    var tvShow by mutableStateOf<Movie?>(null)
+    var userRating by mutableStateOf<Float?>(null)
         private set
 
-    var userRating by mutableStateOf<Float?>(null)
+    var cast by mutableStateOf<List<CastMember>>(emptyList())
         private set
 
     fun loadMovie(movieId: Int) {
@@ -37,30 +36,12 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    var cast by mutableStateOf<List<CastMember>>(emptyList())
-        private set
-
-
     fun loadMovieCast(movieId: Int) {
         viewModelScope.launch {
             cast = repository.getMovieCast(movieId)
         }
     }
 
-//    fun loadTVShow(tvId: Int) {
-//        viewModelScope.launch {
-//            tvShow = repository.getTVShowDetails(tvId)
-//            userRating = ratingRepository.getUserRating(tvId)
-//        }
-//    }
-
     var youtubeTrailerKey by mutableStateOf<String?>(null)
         private set
-
-    fun loadTrailer(movieId: Int) {
-        viewModelScope.launch {
-            youtubeTrailerKey = repository.getYoutubeTrailerKey(movieId)
-        }
-    }
-
 }

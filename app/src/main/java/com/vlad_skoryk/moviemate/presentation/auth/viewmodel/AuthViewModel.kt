@@ -36,7 +36,6 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun checkCurrentUser() {
-        // Симулює асинхронну перевірку (можна додати delay при потребі)
         _authState.value = firebaseAuth.currentUser
         _isAuthChecked.value = true
     }

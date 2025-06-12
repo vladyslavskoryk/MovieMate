@@ -19,6 +19,7 @@ import androidx.navigation.NavHostController
 import com.vlad_skoryk.moviemate.R
 import com.vlad_skoryk.moviemate.data.remote.Movie
 import com.vlad_skoryk.moviemate.presentation.home.components.HomeMovieCard
+import com.vlad_skoryk.moviemate.presentation.home.components.TextHomeScreen
 import com.vlad_skoryk.moviemate.presentation.home.viewmodel.HomeViewModel
 
 @Composable
