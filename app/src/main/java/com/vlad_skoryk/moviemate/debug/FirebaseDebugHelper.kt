@@ -69,15 +69,4 @@ class FirebaseDebugHelper @Inject constructor(
             Timber.e(e, "Error configuring Google Sign-In")
         }
     }
-
-    fun testAnonymousSignIn() {
-        Timber.d("Testing anonymous sign-in...")
-        firebaseAuth.signInAnonymously()
-            .addOnSuccessListener {
-                Timber.d("Anonymous sign-in successful: ${it.user?.uid}")
-            }
-            .addOnFailureListener { e ->
-                Timber.e(e, "Anonymous sign-in failed")
-            }
-    }
 }

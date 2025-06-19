@@ -5,23 +5,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.vlad_skoryk.moviemate.R
 import com.vlad_skoryk.moviemate.data.remote.Movie
 import com.vlad_skoryk.moviemate.presentation.navigation.ScreenRoutes
+import com.vlad_skoryk.moviemate.presentation.search.components.MovieList
 import com.vlad_skoryk.moviemate.presentation.search.viewmodel.SearchViewModel
 
 @Composable
@@ -40,7 +35,7 @@ fun SearchScreenRoute(
         modifier = modifier,
         onSearch = { query -> viewModel.searchMovie(query) },
         searchResults = searchResults,
-        onResultClick = onResultClick // передаємо функцію сюди
+        onResultClick = onResultClick
     )
 }
 
@@ -55,7 +50,7 @@ fun TextSearchScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.dark_blue))
+            .background(color = MaterialTheme.colorScheme.background)
     ) {
         CustomSearchBar(
             onResultClick = onResultClick,
@@ -66,10 +61,4 @@ fun TextSearchScreen(
         )
         MovieList(movies = searchResults, onResultClick = onResultClick)
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SearchScreenPreview() {
-    SearchScreenRoute(navController = rememberNavController())
 }

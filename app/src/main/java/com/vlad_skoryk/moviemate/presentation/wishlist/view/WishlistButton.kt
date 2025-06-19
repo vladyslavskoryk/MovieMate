@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Bookmarks
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -22,7 +23,7 @@ fun WishlistButton(
             modifier = Modifier.size(30.dp),
             imageVector = if (isInWishlist) Icons.Filled.Bookmarks else Icons.Default.BookmarkBorder,
             contentDescription = if (isInWishlist) "Remove from Wishlist" else "Add to Wishlist",
-            tint = colorResource(id = R.color.yellow_main)
+            tint = MaterialTheme.colorScheme.secondary
         )
     }
 }

@@ -1,18 +1,14 @@
-package com.vlad_skoryk.moviemate.presentation.search.view
+package com.vlad_skoryk.moviemate.presentation.rated.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -20,46 +16,24 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.vlad_skoryk.moviemate.R
-import com.vlad_skoryk.moviemate.data.remote.Movie
+import com.vlad_skoryk.moviemate.domain.RatedMovie
 
 @Composable
-fun MovieList(movies: List<Movie>, onResultClick: (Movie) -> Unit = {}) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        items(movies) { movie ->
-            MovieItem(movie = movie, onResultClick = onResultClick)
-        }
-    }
-}
-
-@Composable
-fun MovieItem(
-    movie: Movie,
-    onResultClick: (Movie) -> Unit = {}
-) {
-
-    val posterUrl = "https://image.tmdb.org/t/p/w200${movie.posterPath}"
-
+fun RatedMovieCard(movie: RatedMovie, onClick: (Int) -> Unit) {
+    val posterUrl = "https://image.tmdb.org/t/p/w200${movie.posterUrl}"
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onResultClick(movie) }
+            .clickable { onClick(movie.id) }
             .padding(vertical = 12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.gray_blue)
+            containerColor = MaterialTheme.colorScheme.onPrimary
         )
     ) {
         Row(
@@ -86,15 +60,15 @@ fun MovieItem(
                 Text(
                     text = movie.title ?: "No title",
                     style = MaterialTheme.typography.titleMedium,
-                    color = colorResource(id = R.color.yellow_main)
+                    color = MaterialTheme.colorScheme.secondary
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "${movie.releaseDate} • ⭐ ${movie.voteAverage}",
+                    text = "${movie.releaseDate} • Your rating: ⭐ ${movie.userRating}",
                     style = MaterialTheme.typography.bodySmall,
-                    color = colorResource(id = R.color.light_blue)
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
 
                 Spacer(modifier = Modifier.height(6.dp))
@@ -102,11 +76,11 @@ fun MovieItem(
                 Text(
                     text = movie.overview?.take(120)?.plus("...") ?: "No description",
                     style = MaterialTheme.typography.bodySmall,
-                    color = colorResource(id = R.color.light_blue)
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
         }
     }
 
-    HorizontalDivider(color = colorResource(id = R.color.gray_blue), thickness = 0.5.dp)
+    HorizontalDivider(color = MaterialTheme.colorScheme.primary, thickness = 0.5.dp)
 }

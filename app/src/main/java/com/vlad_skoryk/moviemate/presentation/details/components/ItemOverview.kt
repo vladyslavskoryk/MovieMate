@@ -17,13 +17,13 @@ fun ItemOverview(movie: Movie) {
     Text(
         text = "Overview",
         style = MaterialTheme.typography.headlineSmall,
+        color = MaterialTheme.colorScheme.primary,
         maxLines = 1,
     )
     Spacer(modifier = Modifier.height(10.dp))
-    val lineHeight = MaterialTheme.typography.headlineSmall.fontSize * 4 / 3
     Text(
         text = movie.overview ?: "No description available.",
         style = MaterialTheme.typography.bodyMedium,
-        color = colorResource(id = R.color.light_blue)
+        color = MaterialTheme.colorScheme.onPrimaryContainer
     )
 }

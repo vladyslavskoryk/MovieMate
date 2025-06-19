@@ -39,8 +39,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -120,7 +122,7 @@ fun MovieDetailScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.dark_blue))
+            .background(MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier
@@ -153,7 +155,7 @@ fun MovieDetailScreen(
                 Text(
                     text = movie.title,
                     style = MaterialTheme.typography.headlineSmall,
-                    color = colorResource(id = R.color.light_blue),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f)
@@ -171,17 +173,17 @@ fun MovieDetailScreen(
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("⭐ ${movie.voteAverage}", color = colorResource(id = R.color.light_blue))
+                Text("⭐ ${movie.voteAverage}", color = MaterialTheme.colorScheme.onPrimaryContainer)
                 Spacer(Modifier.width(4.dp))
                 Icon(
                     Icons.Default.ChevronRight,
                     contentDescription = "Star",
-                    tint = colorResource(id = R.color.yellow_main)
+                    tint = MaterialTheme.colorScheme.secondary
                 )
                 Spacer(Modifier.width(4.dp))
                 Text(
                     movie.releaseDate.orEmpty().take(4),
-                    color = colorResource(id = R.color.light_blue)
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 Spacer(Modifier.width(8.dp))
                 Row {
@@ -189,7 +191,7 @@ fun MovieDetailScreen(
                         modifier = Modifier
                             .weight(1f)
                             .clip(MaterialTheme.shapes.small)
-                            .background(colorResource(id = R.color.dark_blue))
+                            .background(MaterialTheme.colorScheme.background)
                             .clickable {
                                 youtubeId?.let {
                                     navController.navigate("youtube/$it")
@@ -201,10 +203,10 @@ fun MovieDetailScreen(
                         Icon(
                             Icons.Default.PlayArrow,
                             contentDescription = "Play Trailer",
-                            tint = colorResource(id = R.color.light_blue)
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text("Play Trailer", color = colorResource(id = R.color.light_blue))
+                        Text("Play Trailer", color = MaterialTheme.colorScheme.onPrimaryContainer)
                     }
                 }
             }
@@ -219,11 +221,11 @@ fun MovieDetailScreen(
                     genres.forEach { genre ->
                         Text(
                             text = genre.name,
-                            color = colorResource(id = R.color.yellow_main),
-                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.secondary,
+                            style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier
                                 .background(
-                                    color = colorResource(id = R.color.light_blue).copy(alpha = 0.2f),
+                                    color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f),
                                     shape = RoundedCornerShape(8.dp)
                                 )
                                 .padding(horizontal = 8.dp, vertical = 4.dp)
@@ -241,8 +243,9 @@ fun MovieDetailScreen(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = "Your rating: ⭐ $userRating",
-                        color = colorResource(id = R.color.yellow_main),
-                        style = MaterialTheme.typography.bodyLarge
+                        color = MaterialTheme.colorScheme.secondary,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
@@ -258,8 +261,9 @@ fun MovieDetailScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = if (userRating != null) "Change rating:" else "Rate movie:",
-                    color = colorResource(id = R.color.yellow_main),
-                    style = MaterialTheme.typography.bodyLarge
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 RatingBar(
@@ -300,7 +304,7 @@ fun MovieDetailScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp)
-                .background(colorResource(id = R.color.dark_blue))
+                .background(MaterialTheme.colorScheme.background)
                 .padding(horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -308,7 +312,7 @@ fun MovieDetailScreen(
                 Icon(
                     imageVector = Icons.Filled.ArrowBack,
                     contentDescription = "Back",
-                    tint = colorResource(id = R.color.yellow_main)
+                    tint = MaterialTheme.colorScheme.secondary
                 )
             }
 
@@ -317,7 +321,8 @@ fun MovieDetailScreen(
             Text(
                 text = movie.title,
                 style = MaterialTheme.typography.headlineSmall,
-                color = colorResource(id = R.color.yellow_main),
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.secondary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f)

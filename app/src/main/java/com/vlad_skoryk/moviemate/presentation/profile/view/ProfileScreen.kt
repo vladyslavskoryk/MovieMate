@@ -1,6 +1,5 @@
 package com.vlad_skoryk.moviemate.presentation.profile.view
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,6 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -28,232 +28,173 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.google.firebase.auth.FirebaseUser
 import com.vlad_skoryk.moviemate.R
-import com.vlad_skoryk.moviemate.presentation.auth.viewmodel.AuthViewModel
-
-@Composable
-fun ProfileScreenRoute(
-    viewModel: AuthViewModel = hiltViewModel(),
-    onSignedOut: () -> Unit
-) {
-    val user by viewModel.authState.collectAsState()
-    val context = LocalContext.current
-    val emailSent = remember { mutableStateOf(false) }
-
-    ProfileScreen(
-        user = user,
-        onSignOut = {
-            viewModel.signOut()
-            onSignedOut()
-        },
-        onSendEmailVerification = {
-            user?.sendEmailVerification()?.addOnCompleteListener {
-                emailSent.value = it.isSuccessful
-                Toast.makeText(
-                    context,
-                    if (it.isSuccessful) "Лист підтвердження надіслано" else "Помилка надсилання",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        },
-        onChangePassword = {
-            viewModel.sendPasswordReset(user?.email ?: "") { success ->
-                Toast.makeText(
-                    context,
-                    if (success) "Посилання на зміну пароля надіслано" else "Помилка зміни пароля",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    )
-}
+import com.vlad_skoryk.moviemate.ui.components.ThemeSwitchButton
 
 @Composable
 fun ProfileScreen(
     user: FirebaseUser?,
+    isDark: Boolean,
+    onToggleTheme: () -> Unit,
     onSignOut: () -> Unit,
     onSendEmailVerification: () -> Unit,
-    onChangePassword: () -> Unit
+    onChangePassword: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val photoUrl = user?.photoUrl
-    val name = user?.displayName ?: user?.email ?: "Гість"
-    val email = user?.email ?: ""
+    val name = user?.displayName ?: user?.email ?: "Guest"
+    val email = user?.email.orEmpty()
     val emailVerified = user?.isEmailVerified ?: false
 
-    Column(
-        modifier = Modifier
+    Box(
+        modifier = modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.dark_blue))
-            .padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.Start,
+            .background(MaterialTheme.colorScheme.background)
     ) {
-        Text(
-            text = "Profile",
-            style = MaterialTheme.typography.headlineSmall,
-            color = colorResource(id = R.color.yellow_main),
-            modifier = Modifier.padding(vertical = 16.dp)
-        )
-
-        HorizontalDivider(
-            color = colorResource(id = R.color.yellow_main),
-            thickness = 1.dp,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        // Profile Card
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.large,
-            colors = CardDefaults.cardColors(
-                containerColor = colorResource(id = R.color.gray_blue)
-            ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-        ) {
-            Column(
-                modifier = Modifier.fillMaxWidth()
-                    .padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                if (photoUrl != null) {
-                    AsyncImage(
-                        model = photoUrl,
-                        contentDescription = "Profile photo",
-                        modifier = Modifier
-                            .size(100.dp)
-                            .clip(CircleShape),
-                        contentScale = ContentScale.Crop
-                    )
-                } else {
-                    Box(
-                        modifier = Modifier
-                            .size(100.dp)
-                            .clip(CircleShape)
-                            .background(Color.LightGray.copy(alpha = 0.2f)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = name.take(1).uppercase(),
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = Color.White
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Text(
-                    text = name,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = colorResource(id = R.color.yellow_main)
-                )
-
-                if (email.isNotEmpty()) {
-                    Text(
-                        text = email,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.LightGray
-                    )
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Email verification status
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = if (emailVerified) Color(0xFF2E7D32) else Color(0xFFC62828)
-            ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-        ) {
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = if (emailVerified) "Email verified" else "Email not verified",
-                    color = colorResource(id = R.color.light_blue),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-                if (!emailVerified) {
-                    OutlinedButton(
-                        onClick = onSendEmailVerification,
-                        border = ButtonDefaults.outlinedButtonBorder,
-                        modifier = Modifier.padding(horizontal = 12.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = colorResource(id = R.color.light_blue)
-                        )
-                    ) {
-                        Text("Send", color = colorResource(id = R.color.light_blue))
-                    }
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Action buttons
         Column(
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.Start
         ) {
-            Button(
-                onClick = onChangePassword,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.gray_blue)
+            Text(
+                text = "Profile",
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+            HorizontalDivider(color = MaterialTheme.colorScheme.primary)
+            Spacer(modifier = Modifier.height(16.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.large,
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.onPrimary
                 ),
-                elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 4.dp),
-                modifier = Modifier.fillMaxWidth()
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
-                Icon(Icons.Default.Key, contentDescription = "Logout", tint = colorResource(id = R.color.light_blue))
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Change password", color = colorResource(id = R.color.light_blue))
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    if (photoUrl != null) {
+                        AsyncImage(
+                            model = photoUrl,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clip(CircleShape),
+                            contentScale = ContentScale.Crop
+                        )
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = name.take(1).uppercase(),
+                                style = MaterialTheme.typography.headlineMedium,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = name,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    if (email.isNotEmpty()) {
+                        Text(
+                            text = email,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
             }
-
-            ElevatedButton(
-                onClick = onSignOut,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.gray_blue)
+            Spacer(modifier = Modifier.height(24.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = if (emailVerified)
+                        MaterialTheme.colorScheme.secondaryContainer
+                    else
+                        MaterialTheme.colorScheme.errorContainer
                 ),
-                elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 4.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = if (emailVerified) "Email Verified" else "Email Not Verified",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                    if (!emailVerified) {
+                        OutlinedButton(onClick = onSendEmailVerification) {
+                            Text("Send Verification")
+                        }
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(32.dp))
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Icon(Icons.Default.Logout, contentDescription = "Logout", tint = colorResource(id = R.color.light_blue))
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Logout", color = colorResource(id = R.color.light_blue))
+                Button(
+                    onClick = onChangePassword,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.onSecondary,
+                        contentColor = MaterialTheme.colorScheme.onError
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
+                ) {
+                    Icon(Icons.Default.Key, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Change Password")
+                }
+                Button(
+                    onClick = onSignOut,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error,
+                        contentColor = MaterialTheme.colorScheme.onError
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
+                ) {
+                    Icon(Icons.Default.Logout, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Sign Out")
+                }
             }
         }
+        ThemeSwitchButton(
+            isDark = isDark,
+            onToggleTheme = onToggleTheme,
+            modifier = Modifier.align(Alignment.BottomEnd)
+        )
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun ProfileScreenPreview() {
-    ProfileScreen(
-        user = null,
-        onSignOut = {},
-        onSendEmailVerification = {},
-        onChangePassword = {}
-    )
 }

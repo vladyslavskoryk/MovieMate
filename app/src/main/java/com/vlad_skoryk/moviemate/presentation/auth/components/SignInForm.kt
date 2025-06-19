@@ -12,8 +12,10 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -47,8 +49,8 @@ fun SignInForm(
     var password by remember { mutableStateOf("") }
     var showPassword by remember { mutableStateOf(false) }
 
-    val placeholderColor = colorResource(id = R.color.yellow_main)
-    val textColor = colorResource(id = R.color.yellow_main)
+    val placeholderColor = MaterialTheme.colorScheme.primary
+    val textColor = MaterialTheme.colorScheme.primary
 
     val textFieldColors = OutlinedTextFieldDefaults.colors(
         focusedBorderColor = placeholderColor,
@@ -100,27 +102,28 @@ fun SignInForm(
 
         Button(
             onClick = { onSignIn(email, password) },
-            colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.gray_blue)),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onSecondary),
             modifier = Modifier.fillMaxWidth(),
             enabled = email.isNotBlank() && password.isNotBlank()
         ) {
             Text("Sign In", color = textColor)
         }
 
-        OutlinedButton(
+        ElevatedButton(
             onClick = onGoogleSignIn,
-            colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.gray_blue)),
-            border = BorderStroke(1.dp, colorResource(id = R.color.dark_blue)),
-            modifier = Modifier.fillMaxWidth()
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.onSecondary),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSecondary),
+            modifier = Modifier.fillMaxWidth(),
+            elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 4.dp)
         ) {
             Icon(
-                painter = painterResource(R.drawable.icons8_google), // Заміни на Google іконку
+                painter = painterResource(R.drawable.icons8_google),
                 contentDescription = null,
-                tint = textColor,
+                tint = MaterialTheme.colorScheme.onSecondaryContainer,
                 modifier = Modifier.size(20.dp)
             )
             Spacer(modifier = Modifier.size(8.dp))
-            Text("Continue with Google", color = textColor)
+            Text("Continue with Google", color = MaterialTheme.colorScheme.onSecondaryContainer)
         }
 
         TextButton(onClick = onSwitchToSignUp) {

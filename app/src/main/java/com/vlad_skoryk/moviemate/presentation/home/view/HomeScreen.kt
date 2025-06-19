@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -49,12 +50,12 @@ fun HomeScreen(
 ) {
     Column(
         modifier = modifier
-            .background(colorResource(id = R.color.dark_blue))
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
     ) {
-        TextHomeScreen(color = R.color.light_blue)
+        TextHomeScreen()
 
-        HorizontalDivider(color = colorResource(id = R.color.gray_blue), thickness = 2.dp)
+        HorizontalDivider(color = MaterialTheme.colorScheme.onPrimary, thickness = 2.dp)
 
         MovieCategoryRow(title = "Popular", movies = popular, onMovieClick)
         MovieCategoryRow(title = "Now Playing", movies = nowPlaying, onMovieClick)
@@ -68,7 +69,7 @@ fun MovieCategoryRow(title: String, movies: List<Movie>, onMovieClick: (Int) -> 
     Column {
         Text(
             text = title,
-            color = colorResource(id = R.color.yellow_main),
+            color = MaterialTheme.colorScheme.primary,
             fontSize = 20.sp,
             modifier = Modifier.padding(16.dp)
         )

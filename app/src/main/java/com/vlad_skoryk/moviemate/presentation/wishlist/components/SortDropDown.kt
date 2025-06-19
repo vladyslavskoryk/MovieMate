@@ -1,11 +1,13 @@
 package com.vlad_skoryk.moviemate.presentation.wishlist.components
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.DropdownMenu
@@ -21,7 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.vlad_skoryk.moviemate.presentation.wishlist.viewmodel.WishlistSortOption
 
@@ -45,7 +46,7 @@ fun SortDropdown(
         ) {
             Text(
                 text = "Sort by: ${selectedOption.label}",
-                color = Color.White,
+                color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.labelLarge
             )
 
@@ -55,13 +56,15 @@ fun SortDropdown(
                 modifier = Modifier
                     .padding(start = 4.dp)
                     .rotate(rotationAngle),
-                tint = Color.White
+                tint = MaterialTheme.colorScheme.primary
             )
         }
 
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.background(MaterialTheme.colorScheme.onPrimary),
+            shape = RoundedCornerShape(12.dp)
         ) {
             WishlistSortOption.values().forEach { option ->
                 DropdownMenuItem(
@@ -69,7 +72,7 @@ fun SortDropdown(
                     onClick = {
                         onSortChange(option)
                         expanded = false
-                    }
+                    },
                 )
             }
         }

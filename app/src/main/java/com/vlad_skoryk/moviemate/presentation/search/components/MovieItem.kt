@@ -1,4 +1,4 @@
-package com.vlad_skoryk.moviemate.presentation.wishlist.components
+package com.vlad_skoryk.moviemate.presentation.search.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -21,19 +21,20 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.vlad_skoryk.moviemate.R
-import com.vlad_skoryk.moviemate.domain.WishlistMovie
+import com.vlad_skoryk.moviemate.data.remote.Movie
 
 @Composable
-fun WishlistMovieCard(
-    movie: WishlistMovie,
-    onMovieClick: (Int) -> Unit
+fun MovieItem(
+    movie: Movie,
+    onResultClick: (Movie) -> Unit = {}
 ) {
-    val posterUrl = "https://image.tmdb.org/t/p/w200${movie.posterUrl}"
+
+    val posterUrl = "https://image.tmdb.org/t/p/w200${movie.posterPath}"
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onMovieClick(movie.id) }
+            .clickable { onResultClick(movie) }
             .padding(vertical = 12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(

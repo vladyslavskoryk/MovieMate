@@ -1,22 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- res/values/themes.xml -->
 <resources>
-
-    <style name="Theme.MovieMate" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.MovieMate" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- ваші інші атрибути -->
+        <item name="android:colorBackground">@color/light_blue</item>
+        <!-- визначте інші атрибути, якщо потрібно -->
+    </style>
 
     <style name="Theme.MovieMate.Splash" parent="Theme.SplashScreen">
-        <!-- Set the splash screen background color -->
-        <item name="windowSplashScreenBackground">@color/dark_blue</item>
+        <!-- посилаємося на атрибут colorBackground -->
+        <item name="windowSplashScreenBackground">?attr/android:colorBackground</item>
 
-        <!-- Set the splash screen icon -->
-        <item name="windowSplashScreenAnimatedIcon">@drawable/icon_main</item>
-
-        <!-- Optional: Set icon animation duration (default is 1000ms) -->
         <item name="windowSplashScreenAnimationDuration">1000</item>
-
-        <!-- Optional: Set brand image (appears at bottom) -->
-        <!-- <item name="windowSplashScreenBrandingImage">@drawable/brand_logo</item> -->
-
-        <!-- Post-splash theme (your main theme) -->
         <item name="postSplashScreenTheme">@style/Theme.MovieMate</item>
     </style>
 </resources>

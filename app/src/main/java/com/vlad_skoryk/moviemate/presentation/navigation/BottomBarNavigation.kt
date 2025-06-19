@@ -17,6 +17,7 @@ import androidx.compose.material.icons.outlined.StarRate
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -42,9 +43,9 @@ data class BottomNavigationBarItem(
     val color: Color,
     val badgeCount: Int? = null,
 )
+
 @Composable
 fun MovieMateBottomBarScreen(
-    @ColorRes color: Int,
     navController: NavHostController,
     selectedTabIndex: Int,
     onTabSelected: (Int) -> Unit
@@ -54,42 +55,42 @@ fun MovieMateBottomBarScreen(
             title = "Home",
             selectedIcon = Icons.Filled.Home,
             unselectedIcon = Icons.Outlined.Home,
-            color = colorResource(id = color),
+            color = MaterialTheme.colorScheme.secondary,
             hasNews = false,
         ),
         BottomNavigationBarItem(
             title = "Wishlist",
             selectedIcon = Icons.Filled.Bookmark,
             unselectedIcon = Icons.Filled.BookmarkBorder,
-            color = colorResource(id = color),
+            color = MaterialTheme.colorScheme.secondary,
             hasNews = false,
         ),
         BottomNavigationBarItem(
             title = "Search",
             selectedIcon = Icons.Filled.Search,
             unselectedIcon = Icons.Outlined.Search,
-            color = colorResource(id = color),
+            color = MaterialTheme.colorScheme.secondary,
             hasNews = false,
         ),
         BottomNavigationBarItem(
             title = "Rated",
             selectedIcon = Icons.Filled.StarRate,
             unselectedIcon = Icons.Outlined.StarRate,
-            color = colorResource(id = color),
+            color = MaterialTheme.colorScheme.secondary,
             hasNews = false,
         ),
         BottomNavigationBarItem(
             title = "Profile",
             selectedIcon = Icons.Filled.Person,
             unselectedIcon = Icons.Outlined.Person,
-            color = colorResource(id = color),
+            color = MaterialTheme.colorScheme.secondary,
             hasNews = false,
         ),
     )
     NavigationBar(
-        containerColor = colorResource(id = R.color.gray_blue),
+        containerColor = MaterialTheme.colorScheme.onPrimary,
         modifier = Modifier
-            .background(colorResource(id = R.color.dark_blue))
+            .background(MaterialTheme.colorScheme.background)
             .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
     ) {
         items.forEachIndexed { index, item ->
@@ -131,103 +132,3 @@ fun MovieMateBottomBarScreen(
         }
     }
 }
-
-
-@Preview(showBackground = true)
-@Composable
-fun MovieMateBottomBarScreenPreview() {
-    MovieMateTheme {
-        MovieMateBottomBarScreen(selectedTabIndex = 0, onTabSelected = {}, color = R.color.yellow_main, navController = rememberNavController())
-    }
-}
-
-
-
-//@Composable
-//fun MovieMateBottomBarScreenTest() {
-//    val navController = rememberNavController()
-//
-//    Scaffold(
-//        containerColor = colorResource(id = R.color.dark_blue),
-//        bottomBar = {
-//            Box {
-//                NavigationBar(
-//                    containerColor = colorResource(id = R.color.gray_blue),
-//                    modifier = Modifier.clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)),
-//                ) {
-//                    NavigationBarItem(
-//                        icon = {
-//                            Icon(
-//                                Icons.Default.Home,
-//                                tint = colorResource(id = R.color.yellow_main),
-//                                contentDescription = "Home"
-//                            )
-//                        },
-//                        label = { Text("Home", color = Color.White) },
-//                        selected = true,
-//                        onClick = { navController.navigate("home") }
-//                    )
-//                    NavigationBarItem(
-//                        icon = {
-//                            Icon(
-//                                Icons.Default.List,
-//                                tint = colorResource(id = R.color.yellow_main),
-//                                contentDescription = "Watchlist"
-//                            )
-//                        },
-//                        label = { Text("Wishlist", color = Color.White) },
-//                        selected = false,
-//                        onClick = { navController.navigate("wishlist") }
-//                    )
-//                    Spacer(modifier = Modifier.weight(1f)) // for FAB space
-//                    NavigationBarItem(
-//                        icon = {
-//                            Icon(
-//                                Icons.Default.Favorite,
-//                                tint = colorResource(id = R.color.yellow_main),
-//                                contentDescription = "History"
-//                            )
-//                        },
-//                        label = { Text("History", color = Color.White) },
-//                        selected = false,
-//                        onClick = { navController.navigate("history") }
-//                    )
-//                    NavigationBarItem(
-//                        icon = {
-//                            Icon(
-//                                Icons.Default.Person,
-//                                tint = colorResource(id = R.color.yellow_main),
-//                                contentDescription = "Profile"
-//                            )
-//                        },
-//                        label = { Text("Profile", color = Color.White) },
-//                        selected = false,
-//                        onClick = { navController.navigate("profile") }
-//                    )
-//                }
-//                FloatingActionButton(
-//                    onClick = { navController.navigate("search") },
-//                    modifier = Modifier
-//                        .align(Alignment.Center)
-//                        .zIndex(1f),
-//                    elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 10.dp),
-//
-//                    shape = RoundedCornerShape(50),
-//                    containerColor = colorResource(id = R.color.yellow_main),
-//                    content = {
-//                        Icon(
-//                            Icons.Default.Search,
-//                            tint = colorResource(id = R.color.dark_blue),
-//                            contentDescription = "Search"
-//                        )
-//                    }
-//                )
-//            }
-//        },
-//        content = { innerPadding ->
-//            Box(modifier = Modifier.padding(innerPadding)) {
-//                HomeScreenRoute(selectedTabIndex = 0, onTabSelected = {})
-//            }
-//        }
-//    )
-//}
