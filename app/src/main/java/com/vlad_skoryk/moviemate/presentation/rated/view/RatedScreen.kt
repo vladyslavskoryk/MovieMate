@@ -30,6 +30,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.vlad_skoryk.moviemate.R
 import com.vlad_skoryk.moviemate.domain.RatedMovie
+import com.vlad_skoryk.moviemate.presentation.rated.components.RatedMovieCard
 import com.vlad_skoryk.moviemate.presentation.rated.viewmodel.RatedViewModel
 
 @Composable
@@ -55,16 +56,16 @@ fun RatedScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.dark_blue))
+            .background(color = MaterialTheme.colorScheme.background)
     ) {
         Text(
             text = "Rated Movies",
             modifier = Modifier.padding(16.dp),
-            color = colorResource(id = R.color.yellow_main),
+            color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.headlineSmall
         )
         HorizontalDivider(
-            color = colorResource(id = R.color.yellow_main),
+            color = MaterialTheme.colorScheme.primary,
             thickness = 1.dp,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
@@ -75,66 +76,4 @@ fun RatedScreen(
             }
         }
     }
-}
-
-@Composable
-fun RatedMovieCard(movie: RatedMovie, onClick: (Int) -> Unit) {
-    val posterUrl = "https://image.tmdb.org/t/p/w200${movie.posterUrl}"
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick(movie.id) }
-            .padding(vertical = 12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.gray_blue)
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            AsyncImage(
-                model = posterUrl,
-                contentDescription = "Movie Poster",
-                modifier = Modifier
-                    .width(100.dp)
-                    .height(150.dp)
-                    .fillMaxHeight(1f),
-                contentScale = ContentScale.FillBounds
-            )
-
-            Spacer(modifier = Modifier.width(12.dp))
-
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(4.dp)
-            ) {
-                Text(
-                    text = movie.title ?: "No title",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = colorResource(id = R.color.yellow_main)
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = "${movie.releaseDate} • Your rating: ⭐ ${movie.userRating}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = colorResource(id = R.color.light_blue)
-                )
-
-                Spacer(modifier = Modifier.height(6.dp))
-
-                Text(
-                    text = movie.overview?.take(120)?.plus("...") ?: "No description",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = colorResource(id = R.color.light_blue)
-                )
-            }
-        }
-    }
-
-    HorizontalDivider(color = colorResource(id = R.color.gray_blue), thickness = 0.5.dp)
 }

@@ -30,7 +30,7 @@ fun HomeMovieCard(movie: Movie, onClick: () -> Unit) {
             .clickable(onClick = onClick),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.gray_blue)
+            containerColor = MaterialTheme.colorScheme.onPrimary
         )
     ) {
         AsyncImage(
@@ -44,7 +44,7 @@ fun HomeMovieCard(movie: Movie, onClick: () -> Unit) {
         Text(
             text = movie.title ?: "No Title",
             fontSize = 12.sp,
-            color = colorResource(id = R.color.light_blue),
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(start = 8.dp)
@@ -52,7 +52,7 @@ fun HomeMovieCard(movie: Movie, onClick: () -> Unit) {
         Text(
             text = "⭐ ${movie.voteAverage} • ${movie.releaseDate.orEmpty().take(4)} ",
             style = MaterialTheme.typography.bodySmall,
-            color = colorResource(id = R.color.light_blue),
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier.padding(start = 8.dp)
         )
     }

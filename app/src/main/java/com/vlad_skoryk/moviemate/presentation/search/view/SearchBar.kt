@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
@@ -22,6 +23,7 @@ import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import com.vlad_skoryk.moviemate.R
 import com.vlad_skoryk.moviemate.data.remote.Movie
+import com.vlad_skoryk.moviemate.presentation.search.components.MovieList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,9 +34,9 @@ fun CustomSearchBar(
     onResultClick: (Movie) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val backgroundColor = colorResource(id = R.color.dark_blue)
-    val placeholderColor = colorResource(id = R.color.yellow_main)
-    val textColor = colorResource(id = R.color.yellow_main)
+    val backgroundColor = MaterialTheme.colorScheme.background
+    val placeholderColor = MaterialTheme.colorScheme.primary
+    val textColor = MaterialTheme.colorScheme.primary
 
     var query by rememberSaveable { mutableStateOf(textFieldState.text.toString()) }
     var active by rememberSaveable { mutableStateOf(false) }

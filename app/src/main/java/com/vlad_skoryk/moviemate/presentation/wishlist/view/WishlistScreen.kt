@@ -69,7 +69,7 @@ fun WishlistScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.dark_blue))
+            .background(color = MaterialTheme.colorScheme.background)
     ) {
         Row(
             modifier = Modifier
@@ -80,7 +80,7 @@ fun WishlistScreen(
             Text(
                 text = "Wishlist",
                 style = MaterialTheme.typography.headlineSmall,
-                color = colorResource(id = R.color.yellow_main),
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 24.sp,
                 modifier = Modifier.weight(1f)
             )
@@ -92,7 +92,7 @@ fun WishlistScreen(
         }
 
         HorizontalDivider(
-            color = colorResource(id = R.color.yellow_main),
+            color = MaterialTheme.colorScheme.primary,
             thickness = 1.dp,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
@@ -100,7 +100,7 @@ fun WishlistScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
         ) {
             items(movies) { movie ->
                 WishlistMovieCard(movie = movie, onMovieClick = onMovieClick)

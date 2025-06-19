@@ -95,7 +95,7 @@ fun SignUpScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.dark_blue))
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
     ) {
         Box(
@@ -122,7 +122,7 @@ fun SignUpScreen(
 
                 Text(
                     text = "Welcome to MovieMate",
-                    color = colorResource(id = R.color.yellow_main),
+                    color = MaterialTheme.colorScheme.secondary,
                     style = MaterialTheme.typography.headlineMedium,
                     textAlign = TextAlign.Center
                 )
@@ -133,7 +133,7 @@ fun SignUpScreen(
                     text = "Discover, rate, and save movies with ease",
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
-                    color = colorResource(id = R.color.light_blue)
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -142,7 +142,7 @@ fun SignUpScreen(
                     text = "Sign up to continue",
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
-                    color = colorResource(id = R.color.light_blue)
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
 
                 Spacer(modifier = Modifier.height(32.dp))

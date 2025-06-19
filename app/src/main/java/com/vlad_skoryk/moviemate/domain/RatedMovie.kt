@@ -10,6 +10,6 @@ data class RatedMovie(
     val overview: String = "",
     val voteAverage: Double = 0.0,
     val releaseDate: String = "",
-    val userRating: Float = 0f // 🔹 це поле важливе
+    val userRating: Float = 0f
 )
 

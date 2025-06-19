@@ -20,13 +20,12 @@ import com.vlad_skoryk.moviemate.R
 
 @Composable
 fun TextHomeScreen(
-    @ColorRes color: Int,
     modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.dark_blue))
+            .background(color = MaterialTheme.colorScheme.background)
     ) {
         Image(
             painter = painterResource(id = R.drawable.background_img),
@@ -37,7 +36,7 @@ fun TextHomeScreen(
         Text(
             text = "Welcome",
             fontSize = 40.sp,
-            color = colorResource(id = color),
+            color = MaterialTheme.colorScheme.secondary,
             modifier = Modifier
                 .padding(16.dp)
                 .height(50.dp)
@@ -51,7 +50,7 @@ fun TextHomeScreen(
                 .align(Alignment.BottomCenter)
                 .padding(32.dp),
             style = MaterialTheme.typography.bodyLarge,
-            color = colorResource(id = color),
+            color = MaterialTheme.colorScheme.secondary,
         )
     }
 }

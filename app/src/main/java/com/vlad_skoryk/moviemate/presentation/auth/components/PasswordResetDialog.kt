@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,9 +31,20 @@ fun PasswordResetDialog(
 ) {
     var email by remember { mutableStateOf("") }
 
+    val placeholderColor = MaterialTheme.colorScheme.primary
+    val textColor = MaterialTheme.colorScheme.primary
+
+    val textFieldColors = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = placeholderColor,
+        unfocusedBorderColor = placeholderColor,
+        focusedLabelColor = placeholderColor,
+        unfocusedLabelColor = placeholderColor,
+        cursorColor = textColor,
+    )
+
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Reset Password", color = colorResource(id = R.color.yellow_main)) },
+        title = { Text("Reset Password", color = MaterialTheme.colorScheme.primary) },
         text = {
             Column {
                 Text("Enter your email address and we'll send you a link to reset your password.")
@@ -41,7 +55,8 @@ fun PasswordResetDialog(
                     label = { Text("Email") },
                     modifier = Modifier.fillMaxWidth(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                    singleLine = true
+                    singleLine = true,
+                    colors = textFieldColors,
                 )
             }
         },
@@ -55,7 +70,7 @@ fun PasswordResetDialog(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text("Cancel", color = MaterialTheme.colorScheme.error)
             }
         }
     )

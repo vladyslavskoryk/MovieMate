@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,7 +26,7 @@ fun CastCard(member: CastMember) {
         modifier = Modifier
             .width(120.dp),
         colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.gray_blue)
+            containerColor = MaterialTheme.colorScheme.onPrimary
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
@@ -41,7 +42,7 @@ fun CastCard(member: CastMember) {
             text = member.name,
             fontSize = 14.sp,
             fontWeight = FontWeight.SemiBold,
-            color = colorResource(id = R.color.light_blue),
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(start = 4.dp)
@@ -49,7 +50,7 @@ fun CastCard(member: CastMember) {
         Text(
             text = member.character,
             fontSize = 12.sp,
-            color = colorResource(id = R.color.light_blue),
+            color = MaterialTheme.colorScheme.secondary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(start = 4.dp)

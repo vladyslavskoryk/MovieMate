@@ -12,7 +12,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.vlad_skoryk.moviemate.R
 import com.vlad_skoryk.moviemate.presentation.auth.view.SignInScreenRoute
 import com.vlad_skoryk.moviemate.presentation.auth.view.SignUpScreenRoute
 import com.vlad_skoryk.moviemate.presentation.auth.viewmodel.AuthViewModel
@@ -20,15 +19,17 @@ import com.vlad_skoryk.moviemate.presentation.details.view.MovieDetailScreenRout
 import com.vlad_skoryk.moviemate.presentation.details.view.YoutubePlayerScreen
 import com.vlad_skoryk.moviemate.presentation.home.view.HomeScreenRoute
 import com.vlad_skoryk.moviemate.presentation.profile.view.ProfileScreenRoute
+import com.vlad_skoryk.moviemate.presentation.profile.viewmodel.SettingsViewModel
 import com.vlad_skoryk.moviemate.presentation.rated.view.RatedScreenRoute
 import com.vlad_skoryk.moviemate.presentation.search.view.SearchScreenRoute
 import com.vlad_skoryk.moviemate.presentation.wishlist.view.WishlistScreenRoute
 
-
 @Composable
 fun MovieMateRootNavigation(
     modifier: Modifier = Modifier,
-    authViewModel: AuthViewModel = hiltViewModel()
+    authViewModel: AuthViewModel = hiltViewModel(),
+    settingsViewModel: SettingsViewModel = hiltViewModel(),
+    onToggleTheme: () -> Unit
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -48,7 +49,7 @@ fun MovieMateRootNavigation(
         ScreenRoutes.SignInScreenRoute.route,
         ScreenRoutes.SignUpScreenRoute.route,
         ScreenRoutes.MovieDetailScreenRoute.route,
-        "youtube/{videoId}" // ← Додай це сюди
+        "youtube/{videoId}"
     )
 
     val isBottomBarVisible = currentRoute !in hideBottomBarRoutes
@@ -64,7 +65,6 @@ fun MovieMateRootNavigation(
         bottomBar = {
             if (isBottomBarVisible) {
                 MovieMateBottomBarScreen(
-                    color = R.color.yellow_main,
                     navController = navController,
                     selectedTabIndex = selectedTabIndex,
                     onTabSelected = { index ->
@@ -82,7 +82,7 @@ fun MovieMateRootNavigation(
         NavHost(
             navController = navController,
             startDestination = startDestination,
-            modifier = modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding)
         ) {
             composable(ScreenRoutes.SignInScreenRoute.route) {
                 SignInScreenRoute(
@@ -118,15 +118,18 @@ fun MovieMateRootNavigation(
             }
             composable(ScreenRoutes.ProfileScreenRoute.route) {
                 ProfileScreenRoute(
+                    authViewModel = authViewModel,
+                    settingsViewModel = settingsViewModel,
                     onSignedOut = {
                         navController.navigate(ScreenRoutes.SignInScreenRoute.route) {
                             popUpTo(ScreenRoutes.HomeScreenRoute.route) { inclusive = true }
                         }
-                    }
+                    },
+                    onToggleTheme = onToggleTheme
                 )
             }
             composable(
-                route = "movie_detail/{movieId}", // Changed from "movieDetail/{movieId}"
+                route = "movie_detail/{movieId}",
                 arguments = listOf(navArgument("movieId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val movieId = backStackEntry.arguments?.getInt("movieId") ?: return@composable
@@ -137,10 +140,11 @@ fun MovieMateRootNavigation(
                 )
             }
             composable("youtube/{videoId}") { backStackEntry ->
-                val videoId = backStackEntry.arguments?.getString("videoId") ?: ""
+                val videoId = backStackEntry.arguments?.getString("videoId").orEmpty()
                 YoutubePlayerScreen(
                     youtubeCode = videoId,
-                    onBack = { navController.popBackStack() })
+                    onBack = { navController.popBackStack() }
+                )
             }
         }
     }

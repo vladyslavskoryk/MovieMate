@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -36,7 +34,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -97,7 +94,6 @@ fun SignInScreenRoute(
             onSendReset = { email ->
                 viewModel.sendPasswordReset(email) { success ->
                     showResetDialog = false
-                    // 🔔 Тут можете викликати Snackbar/Toast через інші механізми
                 }
             }
         )
@@ -119,7 +115,7 @@ fun SignInScreen(
 ) {
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        containerColor = colorResource(id = R.color.dark_blue)
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = modifier
@@ -151,7 +147,7 @@ fun SignInScreen(
 
                     Text(
                         text = "Welcome to MovieMate",
-                        color = colorResource(id = R.color.yellow_main),
+                        color = MaterialTheme.colorScheme.secondary,
                         style = MaterialTheme.typography.headlineMedium,
                         textAlign = TextAlign.Center
                     )
@@ -162,7 +158,7 @@ fun SignInScreen(
                         text = "Discover, rate, and save movies with ease",
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center,
-                        color = colorResource(id = R.color.light_blue)
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -171,7 +167,7 @@ fun SignInScreen(
                         text = "Sign in to continue",
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center,
-                        color = colorResource(id = R.color.light_blue)
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
 
                     Spacer(modifier = Modifier.height(32.dp))
