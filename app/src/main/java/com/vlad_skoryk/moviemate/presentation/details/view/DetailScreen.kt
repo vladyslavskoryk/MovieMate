@@ -21,14 +21,12 @@ import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,60 +41,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.vlad_skoryk.moviemate.R
 import com.vlad_skoryk.moviemate.data.remote.Movie
 import com.vlad_skoryk.moviemate.domain.CastMember
-import com.vlad_skoryk.moviemate.mapper.toWishlistMovie
 import com.vlad_skoryk.moviemate.presentation.details.components.CastSection
 import com.vlad_skoryk.moviemate.presentation.details.components.ItemOverview
-import com.vlad_skoryk.moviemate.presentation.details.viewmodel.MovieDetailViewModel
 import com.vlad_skoryk.moviemate.presentation.rated.view.RatingBar
-import com.vlad_skoryk.moviemate.presentation.rated.viewmodel.RatedViewModel
 import com.vlad_skoryk.moviemate.presentation.wishlist.view.WishlistButton
-import com.vlad_skoryk.moviemate.presentation.wishlist.viewmodel.WishlistViewModel
-
-@Composable
-fun MovieDetailScreenRoute(
-    movieId: Int,
-    navController: NavController,
-    onBack: () -> Unit,
-    detailViewModel: MovieDetailViewModel = hiltViewModel(),
-    wishlistViewModel: WishlistViewModel = hiltViewModel(),
-    ratedViewModel: RatedViewModel = hiltViewModel()
-) {
-    LaunchedEffect(movieId) {
-        detailViewModel.loadMovie(movieId)
-        ratedViewModel.loadUserRating(movieId)
-        detailViewModel.loadMovieCast(movieId)
-    }
-
-    val movie = detailViewModel.movie
-    val cast = detailViewModel.cast
-    val userRating = ratedViewModel.userRating
-    val isInWishlistState = movie?.id?.let {
-        wishlistViewModel.isInWishlistFlow(it).collectAsState(initial = false)
-    }
-
-    if (movie != null && isInWishlistState != null) {
-        MovieDetailScreen(
-            movie = movie,
-            cast = cast ?: emptyList(),
-            isInWishlist = isInWishlistState.value,
-            userRating = userRating,
-            onToggleWishlist = { wishlistViewModel.toggleWishlist(movie.toWishlistMovie()) },
-            onRateMovie = { rating -> ratedViewModel.rateMovie(movie, rating) },
-            onBack = onBack,
-            navController = navController,
-        )
-    } else {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
-        }
-    }
-}
 
 @Composable
 fun MovieDetailScreen(
@@ -250,7 +203,7 @@ fun MovieDetailScreen(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Change",
-                        color = colorResource(id = R.color.light_blue),
+                        color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.clickable { showRatingBar = true },
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -261,7 +214,7 @@ fun MovieDetailScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = if (userRating != null) "Change rating:" else "Rate movie:",
-                    color = MaterialTheme.colorScheme.secondary,
+                    color = MaterialTheme.colorScheme.primary,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                 )
@@ -281,7 +234,7 @@ fun MovieDetailScreen(
                 Text(
                     text = it,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = colorResource(id = R.color.light_blue)
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
 
@@ -290,7 +243,7 @@ fun MovieDetailScreen(
                 Text(
                     text = "Director: ${director.name}",
                     style = MaterialTheme.typography.bodyLarge,
-                    color = colorResource(id = R.color.light_blue)
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
 
@@ -322,7 +275,7 @@ fun MovieDetailScreen(
                 text = movie.title,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.secondary,
+                color = MaterialTheme.colorScheme.primary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f)
